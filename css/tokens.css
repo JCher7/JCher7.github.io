@@ -1,0 +1,191 @@
+/* ============================================================================
+   tokens.css  —  THEME LAYER (decoupled from structure & logic)
+   ----------------------------------------------------------------------------
+   Every visual decision lives here as a CSS custom property. Switching themes
+   only swaps these tokens via the `data-theme` attribute on <html>; the HTML
+   structure and layout in styles.css never change.
+
+   To add a 5th theme: copy a block below, change the [data-theme="..."] key,
+   re-map the tokens, and register the code in js/theme.js THEME_CODES.
+   ========================================================================== */
+
+:root {
+  /* ---- Structural tokens shared by all themes (rarely change) ---- */
+  --maxw: 1120px;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --space: 1rem;
+  --header-h: 64px;
+  --transition: 240ms cubic-bezier(.2, .7, .3, 1);
+
+  /* The token CONTRACT. Defaults below = Theme 1 "Enterprise Corporate".
+     Each theme overrides the same names so components stay theme-blind. */
+
+  /* Surfaces */
+  --bg:            #f7f8fa;
+  --bg-elev:       #ffffff;
+  --bg-sunken:     #eef1f5;
+  --grid:          transparent;          /* optional background pattern */
+
+  /* Text */
+  --text:          #0b1220;
+  --text-muted:    #5b6573;
+  --text-invert:   #ffffff;
+
+  /* Brand / accent */
+  --accent:        #5b5bd6;              /* primary action */
+  --accent-2:      #0ea5e9;
+  --accent-contrast:#ffffff;             /* text on accent */
+  --glow:          0 0 0 0 transparent;  /* themed glow, used on focus/active */
+
+  /* Lines & elevation */
+  --border:        #e3e7ee;
+  --border-strong: #cbd2dd;
+  --border-w:      1px;
+  --shadow:        0 1px 2px rgba(16,24,40,.06), 0 8px 24px rgba(16,24,40,.06);
+  --shadow-lg:     0 12px 40px rgba(16,24,40,.14);
+
+  /* Typography */
+  --font-body:     "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display:  "Inter", system-ui, sans-serif;
+  --font-mono:     "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+  --tracking:      -0.01em;
+  --weight-display: 700;
+  --case:          none;                 /* text-transform for headings */
+
+  /* Persona accent fallbacks (overridable per theme) */
+  --p-pm:        #2563eb;
+  --p-gov:       #0891b2;
+  --p-social:    #db2777;
+
+  color-scheme: light;
+}
+
+/* ============================================================================
+   THEME 2 — /cyber · /matrix  →  "Cyberpunk Terminal"
+   ========================================================================== */
+[data-theme="cyber"] {
+  --bg:            #04070a;
+  --bg-elev:       #0a1014;
+  --bg-sunken:     #060b0e;
+  --grid:          radial-gradient(rgba(0,255,140,.06) 1px, transparent 1px);
+
+  --text:          #c9ffd6;
+  --text-muted:    #4f9e6a;
+  --text-invert:   #04070a;
+
+  --accent:        #00ff85;
+  --accent-2:      #14e0c4;
+  --accent-contrast:#04130a;
+  --glow:          0 0 18px rgba(0,255,133,.55);
+
+  --border:        #103823;
+  --border-strong: #1f6b42;
+  --border-w:      1px;
+  --shadow:        0 0 0 1px rgba(0,255,133,.08), 0 0 24px rgba(0,255,133,.06);
+  --shadow-lg:     0 0 0 1px rgba(0,255,133,.18), 0 0 42px rgba(0,255,133,.18);
+
+  --font-body:     "JetBrains Mono", ui-monospace, monospace;
+  --font-display:  "JetBrains Mono", ui-monospace, monospace;
+  --tracking:      0.02em;
+  --weight-display: 700;
+  --case:          uppercase;
+
+  /* Sharp, terminal-hard corners */
+  --radius:        2px;
+  --radius-sm:     2px;
+
+  --p-pm:        #00ff85;
+  --p-gov:       #14e0c4;
+  --p-social:    #aaff00;
+
+  color-scheme: dark;
+}
+
+/* ============================================================================
+   THEME 3 — /cosmic · /space  →  "Outer Space Constellation"
+   ========================================================================== */
+[data-theme="cosmic"] {
+  --bg:            #0a0518;
+  --bg-elev:       #160c33;
+  --bg-sunken:     #0e0726;
+  --grid:          transparent;
+
+  --text:          #efe9ff;
+  --text-muted:    #a99ed8;
+  --text-invert:   #0a0518;
+
+  --accent:        #b06bff;
+  --accent-2:      #ff5fb0;
+  --accent-contrast:#140428;
+  --glow:          0 0 24px rgba(176,107,255,.55);
+
+  --border:        #3a2a72;
+  --border-strong: #5b46a8;
+  --border-w:      1px;
+  --shadow:        0 8px 30px rgba(80,40,160,.35);
+  --shadow-lg:     0 14px 50px rgba(120,60,220,.45);
+
+  --font-body:     "Space Grotesk", system-ui, sans-serif;
+  --font-display:  "Orbitron", "Space Grotesk", sans-serif;
+  --tracking:      0.04em;
+  --weight-display: 700;
+  --case:          none;
+
+  /* Soft, orbital, rounded corners */
+  --radius:        22px;
+  --radius-sm:     14px;
+
+  --p-pm:        #7c8cff;
+  --p-gov:       #4fe3ff;
+  --p-social:    #ff5fb0;
+
+  color-scheme: dark;
+}
+
+/* ============================================================================
+   THEME 4 — /arcade · /8bit  →  "Retro Arcade"
+   ========================================================================== */
+[data-theme="arcade"] {
+  --bg:            #ffd23f;
+  --bg-elev:       #fff8e7;
+  --bg-sunken:     #ffe79a;
+  --grid:          transparent;
+
+  --text:          #14110a;
+  --text-muted:    #5a3e12;
+  --text-invert:   #fff8e7;
+
+  --accent:        #ff2e63;
+  --accent-2:      #2d6cdf;
+  --accent-contrast:#ffffff;
+  --glow:          4px 4px 0 #14110a;
+
+  --border:        #14110a;
+  --border-strong: #14110a;
+  --border-w:      3px;
+  --shadow:        4px 4px 0 #14110a;
+  --shadow-lg:     7px 7px 0 #14110a;
+
+  --font-body:     "Space Grotesk", system-ui, sans-serif;
+  --font-display:  "Press Start 2P", system-ui, sans-serif;
+  --tracking:      0em;
+  --weight-display: 400;        /* pixel font is heavy already */
+  --case:          uppercase;
+
+  /* Chunky, blocky cartoon corners */
+  --radius:        6px;
+  --radius-sm:     4px;
+
+  --p-pm:        #2d6cdf;
+  --p-gov:       #00a878;
+  --p-social:    #ff2e63;
+
+  color-scheme: light;
+}
+
+/* Respect reduced-motion globally */
+@media (prefers-reduced-motion: reduce) {
+  :root { --transition: 0ms; }
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="default">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Case Study — Joshua Cher</title>
+  <meta name="description" content="Project case study with a lifecycle reading quest." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#case-body">Skip to case study</a>
+
+  <!-- Same pinned header as home (kept structurally identical) -->
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="brand" id="brand" href="index.html">Joshua<span>.</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="index.html#contact">Contact</a>
+        <a class="btn btn--primary" data-resume href="#" download>Download Resume</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Topbar: back-link + a COMPACT cheat console (Concept 3 on case pages) -->
+    <div class="case-topbar">
+      <a class="back-link" href="index.html#projects">← Back to all case studies</a>
+
+      <div class="cheat cheat--compact" aria-label="Cheat-code theme console">
+        <div class="cheat__bar">
+          <span class="cheat__title">⛶ Cheat</span>
+          <button class="cheat__power" type="button" aria-pressed="false">Activate · <kbd>Enter</kbd></button>
+        </div>
+        <output class="cheat__screen" role="status" aria-live="polite">theme: Enterprise</output>
+        <div class="cheat__pad">
+          <div class="dpad">
+            <button class="cbtn" type="button" data-key="U" aria-label="Up">▲</button>
+            <div class="dpad__mid">
+              <button class="cbtn" type="button" data-key="L" aria-label="Left">◀</button>
+              <button class="cbtn cbtn--center" type="button" data-key="C" aria-label="Reset to default theme (R)" title="Reset theme — key: R">●</button>
+              <button class="cbtn" type="button" data-key="R" aria-label="Right">▶</button>
+            </div>
+            <button class="cbtn" type="button" data-key="D" aria-label="Down">▼</button>
+          </div>
+          <div class="abtns">
+            <button class="cbtn cbtn--a" type="button" data-key="A" aria-label="A">A</button>
+            <button class="cbtn cbtn--b" type="button" data-key="B" aria-label="B">B</button>
+          </div>
+        </div>
+        <ul class="cheat__codes">
+          <li><b>Cyber</b><span><kbd data-dir="L" aria-label="left"></kbd><kbd data-dir="L" aria-label="left"></kbd><kbd>B</kbd></span></li>
+          <li><b>Cosmic</b><span><kbd data-dir="U" aria-label="up"></kbd><kbd data-dir="U" aria-label="up"></kbd><kbd>A</kbd></span></li>
+          <li><b>Arcade</b><span><kbd data-dir="D" aria-label="down"></kbd><kbd data-dir="D" aria-label="down"></kbd><kbd>A</kbd><kbd>B</kbd></span></li>
+          <li><b>Reset</b><span><kbd>●</kbd><kbd>R</kbd></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ==================================================================
+         CONCEPT 2 — Reading Quest layout: sticky tracker + case article
+         All content is injected from data.js by js/quest.js
+         ================================================================== -->
+    <div class="quest-layout">
+
+      <!-- Sidebar quest tracker (fixed/sticky) -->
+      <aside class="quest" aria-label="Reading progress">
+        <p class="quest__title">Project Reading Quest</p>
+        <div class="quest__bar"><div class="quest__fill" id="quest-fill"></div></div>
+        <p class="quest__pct" id="quest-pct" aria-live="polite">0% complete</p>
+        <ol id="quest-nodes"><!-- nodes injected --></ol>
+        <a class="btn btn--primary quest__pdf" id="quest-pdf" href="#" download>
+          ↓ Download Full Project PDF
+        </a>
+      </aside>
+
+      <!-- Case study article -->
+      <article class="case">
+        <span class="eyebrow" id="case-org"></span>
+        <h1 id="case-title"></h1>
+        <p class="case__lede" id="case-lede"></p>
+        <div class="chips" id="case-skills" style="margin-bottom:1.5rem"></div>
+        <div id="case-body"><!-- phases injected --></div>
+      </article>
+    </div>
+  </main>
+
+  <!-- Footer + cheat console (identical engine to home) -->
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="brand" style="font-size:1.1rem">Joshua Cher</p>
+        <p class="muted" style="font-size:.85rem">Resume lives in the top navigation bar ↑</p>
+        <p class="muted" style="font-size:.8rem">Tip: cheat codes (arrow keys + A/B) work here too.</p>
+      </div>
+      <div class="theme-quick-wrap">
+        <p class="cheat__title">🎨 Switch theme instantly</p>
+        <div class="theme-quick" role="group" aria-label="Switch theme">
+          <button type="button" data-theme-pill="default" aria-pressed="true">Enterprise</button>
+          <button type="button" data-theme-pill="cyber">Cyber</button>
+          <button type="button" data-theme-pill="cosmic">Cosmic</button>
+          <button type="button" data-theme-pill="arcade">Arcade</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Celebration overlay (confetti + stamp) -->
+  <div class="celebrate" id="celebrate" aria-hidden="true">
+    <div class="stamp">Quest Complete ✓</div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/avatars.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/quest.js"></script>
+</body>
+</html>

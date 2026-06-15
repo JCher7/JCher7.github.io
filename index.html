@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="default">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Joshua Cher — IT · Governance · Community</title>
+  <meta name="description" content="Portfolio of Joshua Cher — Information Systems undergraduate bridging IT delivery, governance & compliance, and community impact." />
+
+  <!-- Theme fonts: each maps to a --font-* token in tokens.css -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Orbitron:wght@600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <!-- Decoupled layers: tokens (theme) then structure (components) -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#projects">Skip to projects</a>
+
+  <!-- ====================================================================
+       PINNED HEADER — always available, bypasses interactive layers
+       ==================================================================== -->
+  <header class="site-header">
+    <div class="wrap site-header__inner">
+      <a class="brand" id="brand" href="index.html">Joshua<span>.</span></a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+        <a class="btn btn--primary" data-resume href="#" download>Download Resume</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================================================================
+         HERO — immediate value: name, role, location, resume CTA (<3s)
+         ================================================================== -->
+    <section class="hero" id="about">
+      <div class="wrap hero__inner">
+        <!-- Intro: name / role / location / CTA (immediate value) -->
+        <div class="hero__intro">
+          <p class="eyebrow">Select your character ↓</p>
+          <h1 id="hero-name">Joshua Cher</h1>
+          <p class="hero__role" id="hero-role">Information Systems Undergraduate · SMU</p>
+          <p class="hero__role" id="hero-tagline" style="max-width:54ch"></p>
+          <div class="hero__meta">
+            <span id="hero-location">📍 Singapore</span>
+            <a id="hero-email" href="#">✉ Email</a>
+            <a data-linkedin href="#" target="_blank" rel="noopener">in/ LinkedIn</a>
+          </div>
+          <div class="hero__cta">
+            <a class="btn btn--primary" href="#projects">▶ Browse case studies</a>
+            <a class="btn" data-linkedin href="#" target="_blank" rel="noopener">View LinkedIn</a>
+          </div>
+        </div>
+
+        <!-- ==============================================================
+             CHEAT CONSOLE — Concept 3. Sits beside the intro. Keyboard is
+             LIVE from load (arrow keys + A/B work anywhere); tapping the pad
+             also works. Center ● resets. Combos are printed below.
+             ============================================================== -->
+        <aside class="hero__console">
+          <div class="cheat" aria-label="Cheat-code theme console">
+            <div class="cheat__bar">
+              <span class="cheat__title">⛶ Cheat Console</span>
+              <button class="cheat__power" type="button" aria-pressed="false">Activate keyboard · <kbd>Enter</kbd></button>
+            </div>
+            <output class="cheat__screen" role="status" aria-live="polite">theme: Enterprise</output>
+            <p class="cheat__note">Tap the pad anytime. Press <b>Enter</b> to drive it with arrow keys + A/B, <b>Esc</b> to exit.</p>
+            <div class="cheat__pad">
+              <div class="dpad">
+                <button class="cbtn" type="button" data-key="U" aria-label="Up">▲</button>
+                <div class="dpad__mid">
+                  <button class="cbtn" type="button" data-key="L" aria-label="Left">◀</button>
+                  <button class="cbtn cbtn--center" type="button" data-key="C" aria-label="Reset to default theme (R)" title="Reset theme — key: R">●</button>
+                  <button class="cbtn" type="button" data-key="R" aria-label="Right">▶</button>
+                </div>
+                <button class="cbtn" type="button" data-key="D" aria-label="Down">▼</button>
+              </div>
+              <div class="abtns">
+                <button class="cbtn cbtn--a" type="button" data-key="A" aria-label="A">A</button>
+                <button class="cbtn cbtn--b" type="button" data-key="B" aria-label="B">B</button>
+              </div>
+            </div>
+            <ul class="cheat__codes">
+              <li><b>Cyber</b><span><kbd data-dir="L" aria-label="left"></kbd><kbd data-dir="L" aria-label="left"></kbd><kbd>B</kbd></span></li>
+              <li><b>Cosmic</b><span><kbd data-dir="U" aria-label="up"></kbd><kbd data-dir="U" aria-label="up"></kbd><kbd>A</kbd></span></li>
+              <li><b>Arcade</b><span><kbd data-dir="D" aria-label="down"></kbd><kbd data-dir="D" aria-label="down"></kbd><kbd>A</kbd><kbd>B</kbd></span></li>
+              <li><b>Reset</b><span><kbd>●</kbd><kbd>R</kbd></span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         CONCEPT 1 — "Select Your Character" persona dashboard
+         Cards are rendered + wired by js/home.js
+         ================================================================== -->
+    <section class="wrap" aria-labelledby="dash-title">
+      <div class="dash__head">
+        <div>
+          <h2 id="dash-title">Choose a lens</h2>
+          <p class="muted" style="margin:.2rem 0 0">Filter the work by the role you're hiring for.</p>
+        </div>
+      </div>
+      <div class="persona-grid" id="persona-grid" role="group" aria-label="Persona filters"><!-- injected --></div>
+    </section>
+
+    <!-- ==================================================================
+         PROJECT FEED — filter target of Concept 1
+         ================================================================== -->
+    <section class="feed wrap" id="projects" aria-labelledby="feed-title">
+      <div class="feed__head">
+        <h2 id="feed-title">Case Studies</h2>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <span class="feed__status" id="feed-status" aria-live="polite"></span>
+          <button class="btn btn--ghost" id="clear-filter" hidden>✕ Clear filter</button>
+        </div>
+      </div>
+      <div class="project-grid" id="project-grid"><!-- injected --></div>
+    </section>
+  </main>
+
+  <!-- ====================================================================
+       FOOTER + CHEAT-CODE TERMINAL — Concept 3 discovery mechanism
+       ==================================================================== -->
+  <footer class="site-footer" id="contact">
+    <div class="wrap footer-grid">
+      <div>
+        <p class="brand" style="font-size:1.1rem">Let's build something.</p>
+        <p class="muted" style="margin:.3rem 0">
+          <a id="footer-email" href="mailto:joshua.cher.2024@computing.smu.edu.sg">joshua.cher.2024@computing.smu.edu.sg</a><br>
+          <a data-linkedin href="#" target="_blank" rel="noopener">linkedin.com/in/joshuacher</a>
+        </p>
+        <p class="muted" style="font-size:.85rem">Resume lives in the top navigation bar ↑</p>
+      </div>
+
+      <!-- ================================================================
+           INSTANT THEME SWITCH — one click = one theme (no combo needed).
+           The full cheat-code console lives up in the hero.
+           ================================================================ -->
+      <div class="theme-quick-wrap">
+        <p class="cheat__title">🎨 Switch theme instantly</p>
+        <div class="theme-quick" role="group" aria-label="Switch theme">
+          <button type="button" data-theme-pill="default" aria-pressed="true">Enterprise</button>
+          <button type="button" data-theme-pill="cyber">Cyber</button>
+          <button type="button" data-theme-pill="cosmic">Cosmic</button>
+          <button type="button" data-theme-pill="arcade">Arcade</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Load order: data → avatars → store → theme → page controller -->
+  <script src="js/data.js"></script>
+  <script src="js/avatars.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>
