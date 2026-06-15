@@ -206,6 +206,64 @@ a:hover { text-decoration: underline; }
 }
 @media (max-width: 720px) { .project-grid { grid-template-columns: 1fr; } }
 
+/* ---- Filter status bar ---- */
+.filterbar { display:flex; align-items:center; gap:1rem; margin-bottom: 1.5rem;
+  min-height: 2rem; }
+
+/* ---- Prominent, numbered section headers (used by every block) ---- */
+.block { margin: 0 0 2.8rem; scroll-margin-top: calc(var(--header-h) + 12px); }
+.block.is-empty { display: none; }            /* hidden when filtered to nothing */
+.block__head { display:flex; align-items:center; gap:.85rem; margin: 0 0 1.4rem; }
+.block__no {
+  font-family: var(--font-mono); font-weight: 700; font-size: .9rem;
+  color: var(--accent-contrast); background: var(--accent);
+  padding: .32rem .6rem; border-radius: var(--radius-sm); line-height: 1;
+  box-shadow: var(--glow);
+}
+.block__title {
+  margin: 0; line-height: 1;
+  font-size: clamp(1.55rem, 3.6vw, 2.2rem);
+}
+.block__count {
+  font-family: var(--font-mono); font-size: .74rem; font-weight: 600;
+  color: var(--accent); padding: .16rem .55rem; border-radius: 999px;
+  border: 1px solid var(--accent);
+}
+.block__rule { flex: 1; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--border-strong), transparent); }
+
+/* Plain (non-quest) profile cards: muted CTA label instead of a button */
+.card__cta--static {
+  margin-top: auto; align-self: flex-start;
+  font-family: var(--font-mono); font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--text-muted);
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-sm);
+  padding: .4rem .7rem;
+}
+
+/* ---- Skills ---- */
+.skills-group { margin-bottom: 1.1rem; }
+.skills-group h4 { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text-muted); margin: 0 0 .55rem; }
+.skill-chips { display: flex; flex-wrap: wrap; gap: .45rem; }
+.skill {
+  padding: .4rem .8rem; font-size: .85rem; border-radius: 999px;
+  color: var(--text); background: var(--bg-elev);
+  border: var(--border-w) solid var(--border-strong);
+}
+
+/* ---- Education / Honors / Certifications mini-cards ---- */
+.mini-grid { display: grid; gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.mini {
+  padding: 1.1rem 1.2rem; border-radius: var(--radius);
+  background: var(--bg-elev); border: var(--border-w) solid var(--border);
+  box-shadow: var(--shadow);
+}
+.mini h4 { margin: 0; font-size: 1.02rem; }
+.cert-link { display: inline-block; margin-top: .6rem; font-family: var(--font-mono);
+  font-size: .8rem; }
+
 .card {
   display: flex; flex-direction: column; gap: .55rem;
   padding: 1.2rem; height: 100%;

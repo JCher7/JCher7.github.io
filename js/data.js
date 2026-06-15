@@ -61,9 +61,14 @@ const PHASE_META = [
   { key: "deliver",    tag: "Delivery",   label: "Systems Integration & Quantified Metrics" },
 ];
 
+/* Feed groups, rendered in this order — mirrors your LinkedIn sections.
+   Each PROJECTS entry sets `section` to one of these labels. */
+const SECTION_ORDER = ["Experience", "Projects", "Volunteering"];
+
 const PROJECTS = [
   {
     id: "pdpa-agent",
+    section: "Projects",
     title: "PDPA Compliance AI Agent",
     org: "Income Insurance Limited",
     period: "May 2026 – Present",
@@ -106,6 +111,7 @@ const PROJECTS = [
 
   {
     id: "inspirar",
+    section: "Experience",
     title: "SMU Inspirar — Presidency & CSP Finale",
     org: "SMU Inspirar",
     period: "Jun 2025 – Jan 2026",
@@ -146,6 +152,7 @@ const PROJECTS = [
 
   {
     id: "volunteerconnect",
+    section: "Projects",
     title: "VolunteerConnect",
     org: "Singapore Management University",
     period: "Aug 2025 – Nov 2025",
@@ -185,6 +192,7 @@ const PROJECTS = [
 
   {
     id: "rsaf-logistics",
+    section: "Experience",
     title: "Reservist Training Logistics & HR",
     org: "Republic of Singapore Air Force",
     period: "Jan 2024 – May 2024",
@@ -224,6 +232,7 @@ const PROJECTS = [
 
   {
     id: "sportytown",
+    section: "Projects",
     title: "SportyTown — Sports Matchmaking App",
     org: "Singapore Management University",
     period: "Aug 2025 – Nov 2025",
@@ -257,37 +266,99 @@ const PROJECTS = [
     },
   },
 
+  /* ---- Shorter roles below are "profile entries": same card, but no quest
+          case study (omit `quest`). They still group + filter by persona. ---- */
+
   {
-    id: "community-service",
-    title: "Grassroots Volunteering — Willing Hearts & Go Green",
-    org: "Willing Hearts · Temasek JC",
-    period: "Ongoing",
-    personas: ["social"],
-    summary: "Hands-on community service: preparing soup-kitchen meals at Willing Hearts and running annual Go Green recycling drives across HDB estates for charity.",
-    skills: ["Community Service", "Volunteering", "Sustainability"],
-    pdf: "#",
-    quest: {
-      scope: {
-        body: `<p>Direct community need: daily meals for those who depend on them, and neighbourhood sustainability. Scope spans a soup kitchen and recurring estate-level recycling drives.</p>`,
-      },
-      risk: {
-        body: `<p>Food-prep volunteering and estate collections need reliability and care for the people served and the partners involved.</p>
-        <ul>
-          <li>Consistent participation in daily meal-prep efforts.</li>
-          <li>Annual, repeatable Go Green collection routes across HDB estates.</li>
-        </ul>`,
-      },
-      execute: {
-        body: `<p>Assisted meal preparation at the Willing Hearts soup kitchen, and collected recyclables — old newspapers and unwanted clothes — from HDB estates during Go Green Day.</p>`,
-      },
-      deliver: {
-        body: `<p>Proceeds from recycling were donated to charity, supporting sustainability and community causes; meals contributed to daily provision for communities in need.</p>`,
-        metrics: [
-          { value: "Daily", label: "Meal-prep contribution" },
-          { value: "Annual", label: "Go Green recycling drives" },
-          { value: "→ Charity", label: "Recycling proceeds donated" },
-        ],
-      },
-    },
+    id: "income-dpo",
+    section: "Experience",
+    title: "Data Protection Intern",
+    org: "Income Insurance Limited",
+    period: "May 2026 – Present",
+    personas: ["gov"],
+    summary: "Supporting the Regulatory Compliance team in ensuring adherence to the PDPA — monitoring personal-data protection policies, reviewing Data Privacy Impact Assessments (DPIAs), and supporting data-breach management.",
+    skills: ["PDPA", "DPIAs", "Data Breach Management"],
   },
+  {
+    id: "archery-secretary",
+    section: "Experience",
+    title: "Honorary General Secretary",
+    org: "SMU Archery",
+    period: "Jan 2026 – Present",
+    personas: ["pm"],
+    summary: "Overseeing administrative operations for the club — managing official documentation and stakeholder correspondence, and supporting the exco on event-participation records and membership matters for smooth day-to-day operations.",
+    skills: ["Operations", "Documentation", "Stakeholder Management"],
+  },
+  {
+    id: "maven-data",
+    section: "Experience",
+    title: "Data & Production Assistant",
+    org: "Maven Potter",
+    period: "Dec 2021 – Feb 2022",
+    personas: ["gov", "pm"],
+    summary: "Processed and organised client social-media data to support quantitative analysis of engagement, reach, and campaign performance, and assisted in producing marketing advertisements for clients.",
+    skills: ["Data Management", "On-set Production", "Analytics"],
+  },
+
+  {
+    id: "inspirar-volunteer",
+    section: "Volunteering",
+    title: "Student Volunteer",
+    org: "SMU Inspirar (2024)",
+    period: "Aug 2024 – Jan 2025",
+    personas: ["social"],
+    summary: "Ran weekly engagement sessions for seniors across various centres, promoting social connection and active ageing. This formative experience motivated me to take on greater responsibility as President of Inspirar 2025.",
+    skills: ["Community Service", "Senior Care", "Teamwork"],
+  },
+  {
+    id: "willing-hearts",
+    section: "Volunteering",
+    title: "Student Volunteer",
+    org: "Willing Hearts",
+    period: "Social Services",
+    personas: ["social"],
+    summary: "Assisted in preparing meals at the soup kitchen, contributing to daily efforts to provide food for communities in need.",
+    skills: ["Community Service", "Volunteering"],
+  },
+  {
+    id: "go-green",
+    section: "Volunteering",
+    title: "Go Green Volunteer",
+    org: "Temasek Junior College",
+    period: "Environment",
+    personas: ["social"],
+    summary: "Participated annually in Go Green Day, collecting recyclables such as old newspapers and unwanted clothes from HDB estates. Proceeds were donated to charity in support of sustainability and community causes.",
+    skills: ["Sustainability", "Community Service"],
+  },
+];
+
+/* ============================================================================
+   PROFILE SECTIONS (non-feed, info-only). Rendered below the case studies.
+   Edit freely — these drive the Skills / Education / Honors / Certs blocks.
+   ========================================================================== */
+
+const SKILLS = [
+  { group: "Leadership & Management", items: ["Project Management", "Team Leadership", "Event Planning", "Event Management", "HR Management", "Training Delivery"] },
+  { group: "Data & Engineering", items: ["AI Application Development", "Data Management", "Python", "Microsoft Excel", "Tableau", "MySQL", "PHP", "Node.js", "React.js", "Vue.js", "JavaScript", "HTML", "CSS", "Bootstrap", "Google Maps API"] },
+  { group: "Design & Production", items: ["Figma", "User Interface Design", "On-set Production"] },
+];
+
+const EDUCATION = [
+  { school: "Singapore Management University", detail: "Information Systems", period: "2024 – 2028" },
+  { school: "Temasek Junior College", detail: "GCE 'A' Levels · Integrated Programme (IP)", period: "" },
+];
+
+const HONORS = [
+  { title: "Professor Tan Teck Meng Endeavour Award", issuer: "Singapore Management University", date: "Jun 2026",
+    note: "Awarded by SMU School of Accountancy in recognition of fortitude and resilience throughout my undergraduate journey — honouring students who embody perseverance and serve as role models." },
+  { title: "Serviceman of the Year (2023)", issuer: "Republic of Singapore Air Force", date: "Dec 2023" },
+  { title: "Airman of the Month", issuer: "Republic of Singapore Air Force", date: "Mar 2023" },
+  { title: "Best-in-Knowledge Award", issuer: "Republic of Singapore Air Force", date: "" },
+];
+
+const CERTIFICATIONS = [
+  { name: "Pilot Pen Community Champion Award (Elderly Issues)", authority: "Singapore Management University", date: "Apr 2026",
+    url: "https://accredify.io/verify?id=28042bf7-8ba9-485e-b102-ffd12eea7548" },
+  { name: "LIB001 Library Research Skills 2024-25", authority: "SMU Libraries", date: "Oct 2024",
+    url: "https://accredify.io/verify?id=c8cd6a22-dc25-49e4-86f8-092460b381de" },
 ];
