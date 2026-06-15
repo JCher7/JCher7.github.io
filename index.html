@@ -112,15 +112,12 @@
     <!-- ==================================================================
          PROJECT FEED — filter target of Concept 1
          ================================================================== -->
-    <section class="feed wrap" id="projects" aria-labelledby="feed-title">
-      <div class="feed__head">
-        <h2 id="feed-title">Case Studies</h2>
-        <div style="display:flex;align-items:center;gap:1rem">
-          <span class="feed__status" id="feed-status" aria-live="polite"></span>
-          <button class="btn btn--ghost" id="clear-filter" hidden>✕ Clear filter</button>
-        </div>
+    <section class="feed wrap" id="projects" aria-label="Portfolio">
+      <div class="filterbar">
+        <span class="feed__status" id="feed-status" aria-live="polite"></span>
+        <button class="btn btn--ghost" id="clear-filter" hidden>✕ Clear filter</button>
       </div>
-      <div class="project-grid" id="project-grid"><!-- injected --></div>
+      <div id="sections"><!-- all section blocks injected --></div>
     </section>
   </main>
 
