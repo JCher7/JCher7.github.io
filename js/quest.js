@@ -10,8 +10,7 @@
   const params = new URLSearchParams(location.search);
   const project = PROJECTS.find((p) => p.id === params.get("p")) || PROJECTS[0];
 
-  /* ---- shared chrome (brand, resume, theme engine) ---- */
-  $("#brand").innerHTML = `${PROFILE.name.split(" ")[0]}<span>.</span>`;
+  /* ---- shared chrome (resume, theme engine) ---- */
   document.querySelectorAll("[data-resume]").forEach((b) => (b.href = PROFILE.resume));
   document.title = `${project.title} — ${PROFILE.name}`;
   Theme.init();
@@ -87,7 +86,10 @@
   const fill = $("#quest-fill");
   const pctEl = $("#quest-pct");
   const pdfBtn = $("#quest-pdf");
-  pdfBtn.href = project.pdf || "#";
+  // Only show the PDF button when a real file is provided (not the "#" placeholder).
+  const hasPdf = project.pdf && project.pdf !== "#";
+  if (hasPdf) pdfBtn.href = project.pdf;
+  else pdfBtn.remove();
   let celebrated = false;
 
   const nodes = [...nodeList.children];
@@ -138,7 +140,7 @@
     pctEl.textContent = pct + "% complete";
     if (pct === 100 && !celebrated) {
       celebrated = true;
-      pdfBtn.classList.add("is-unlocked");
+      if (hasPdf) pdfBtn.classList.add("is-unlocked");
       celebrate();
     }
   }

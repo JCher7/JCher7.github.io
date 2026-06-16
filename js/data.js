@@ -34,10 +34,21 @@ const STAT_AXES = ["Leadership", "Delivery", "Compliance", "Data / Tech", "Commu
    `quote` the dossier one-liner. */
 const PERSONAS = [
   {
+    id: "builder",
+    alias: "The Builder",
+    title: "AI & Software Builder",
+    tag: "AI Development · Full-Stack · UI/UX",
+    accentVar: "--p-builder",
+    blurb: "Designs and ships software — conversational AI, full-stack web apps, and clean UI/UX.",
+    quote: "I turn a messy problem into a working tool you can actually click.",
+    signature: ["AI Application Development", "React.js", "Node.js", "UI/UX Design"],
+    stats: [5, 8, 6, 10, 4],
+  },
+  {
     id: "pm",
-    alias: "The Operator",
-    title: "The IT Project Manager & Event Organizer",
-    tag: "Delivery · Logistics · Ops",
+    alias: "The Organiser",
+    title: "Project Manager & Event Organiser",
+    tag: "Project Management · Event Management · Operations",
     accentVar: "--p-pm",
     blurb: "Leads cross-functional teams, runs large-scale events, and keeps complex operations on schedule.",
     quote: "Give me the scope and the deadline — I'll bring the team and the plan.",
@@ -46,9 +57,9 @@ const PERSONAS = [
   },
   {
     id: "gov",
-    alias: "The Auditor",
-    title: "The Governance & Compliance Analyst",
-    tag: "PDPA · Risk · Audit",
+    alias: "The Regulator",
+    title: "Governance & Compliance Analyst",
+    tag: "Compliance · Risk · Data Protection",
     accentVar: "--p-gov",
     blurb: "Translates regulation into controls — data protection, DPIAs, and policy assurance.",
     quote: "If it isn't in the source and it can't be verified, it doesn't ship.",
@@ -57,9 +68,9 @@ const PERSONAS = [
   },
   {
     id: "social",
-    alias: "The Connector",
-    title: "The Social Impact & Community Lead",
-    tag: "Volunteering · Seniors · NGOs",
+    alias: "The Changemaker",
+    title: "Social Impact & Community Lead",
+    tag: "Community · Stakeholder Engagement · Volunteering",
     accentVar: "--p-social",
     blurb: "Mobilises volunteers and partners to deliver sustained, measurable community outcomes.",
     quote: "Behind every metric is a person — I build the teams that show up for them.",
@@ -87,7 +98,7 @@ const PROJECTS = [
     title: "PDPA Compliance AI Agent",
     org: "Income Insurance Limited",
     period: "May 2026 – Present",
-    personas: ["gov", "pm"],
+    personas: ["builder", "gov"],
     summary: "A conversational AI that answers PDPA questions from source documents with verifiable citations, and diffs internal notices against approved templates — runnable fully on-device.",
     skills: ["AI Application Development", "Python", "FastAPI", "RAG / Vector DB", "PDPA"],
     pdf: "#",
@@ -171,7 +182,7 @@ const PROJECTS = [
     title: "VolunteerConnect",
     org: "Singapore Management University",
     period: "Aug 2025 – Nov 2025",
-    personas: ["social", "pm"],
+    personas: ["builder", "social"],
     summary: "A web app (team of 6) streamlining NGO volunteer recruitment, with an AI chatbot, an interactive opportunity map, community and impact tracking.",
     skills: ["React.js", "Node.js", "Supabase", "Google Maps API", "Firebase Auth"],
     pdf: "#",
@@ -211,7 +222,7 @@ const PROJECTS = [
     title: "Air Defense Weapon Specialist (Short-term Contract)",
     org: "Republic of Singapore Air Force",
     period: "Jan 2024 – May 2024",
-    personas: ["pm", "gov"],
+    personas: ["pm"],
     summary: "Managed NSmen HR functions and the logistical preparation of reservist training as a trainer, ensuring full compliance with training standards.",
     skills: ["Logistics Planning", "HR Management", "Microsoft Excel", "Training Delivery", "Compliance"],
     pdf: "#",
@@ -251,7 +262,7 @@ const PROJECTS = [
     title: "SportyTown — Sports Matchmaking App",
     org: "Singapore Management University",
     period: "Aug 2025 – Nov 2025",
-    personas: ["pm"],
+    personas: ["builder"],
     summary: "A UI/UX Figma prototype (team of 6) for a sports matchmaking app — AI skill evaluation, smart game discovery, real-time slots, cost-splitting, and reliability ratings.",
     skills: ["Figma", "User Interface Design", "UX Research", "Prototyping"],
     pdf: "#",
@@ -310,7 +321,7 @@ const PROJECTS = [
     title: "Data and Production Assistant",
     org: "Maven Potter",
     period: "Dec 2021 – Feb 2022",
-    personas: ["gov", "pm"],
+    personas: ["builder"],
     summary: "Processed and organised client social-media data to support quantitative analysis of engagement, reach, and campaign performance, and assisted in producing marketing advertisements for clients.",
     skills: ["Data Management", "On-set Production", "Analytics"],
   },
@@ -352,10 +363,12 @@ const PROJECTS = [
    Edit freely — these drive the Skills / Education / Honors / Certs blocks.
    ========================================================================== */
 
+/* `role` links a skill category to a persona id — selecting that character
+   auto-opens this group in the skills mindmap. */
 const SKILLS = [
-  { group: "Leadership & Management", items: ["Project Management", "Team Leadership", "Event Planning", "Event Management", "HR Management", "Training Delivery"] },
-  { group: "Data & Engineering", items: ["AI Application Development", "Data Management", "Python", "Microsoft Excel", "Tableau", "MySQL", "PHP", "Node.js", "React.js", "Vue.js", "JavaScript", "HTML", "CSS", "Bootstrap", "Google Maps API"] },
-  { group: "Design & Production", items: ["Figma", "User Interface Design", "On-set Production"] },
+  { group: "Leadership & Management", colour: "--p-pm", role: "pm", items: ["Project Management", "Team Leadership", "Event Planning", "Event Management", "HR Management", "Training Delivery"] },
+  { group: "Data & Engineering", colour: "--p-builder", role: "builder", items: ["AI Application Development", "Data Management", "Python", "Microsoft Excel", "Tableau", "MySQL", "PHP", "Node.js", "React.js", "Vue.js", "JavaScript", "HTML", "CSS", "Bootstrap", "Google Maps API"] },
+  { group: "Design & Production", colour: "--p-social", role: "social", items: ["Figma", "User Interface Design", "On-set Production"] },
 ];
 
 const EDUCATION = [

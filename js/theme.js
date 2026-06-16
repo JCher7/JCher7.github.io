@@ -31,7 +31,7 @@ const Theme = (() => {
   const MAXLEN = Math.max(...COMBOS.map((c) => c.seq.length));
 
   let buffer = [];
-  let screenEl, hud, idle = "default", idleTimer, armed = false;
+  let screenEl, hud, codesHud, idle = "default", idleTimer, armed = false;
 
   const apply = (t) => document.documentElement.setAttribute("data-theme", t);
   const isField = (el) => {
@@ -44,6 +44,7 @@ const Theme = (() => {
   function init() {
     screenEl = document.querySelector(".cheat__screen");
     buildHud();
+    buildCodesHud();
 
     document.querySelectorAll(".cbtn").forEach((b) =>
       b.addEventListener("click", () => press(b.dataset.key, b)));
@@ -91,6 +92,7 @@ const Theme = (() => {
     armed = v;
     document.querySelectorAll(".cheat").forEach((c) => c.classList.toggle("is-armed", armed));
     if (hud) hud.hidden = !armed;
+    if (codesHud) codesHud.hidden = !armed;       // top-right code list while active
     renderPower();
     if (armed) { screen("● keyboard active — use the pad", true); queueIdle(); }
     else { renderIdle(); }
@@ -119,6 +121,29 @@ const Theme = (() => {
       + (onCase ? ' · <kbd>Esc</kbd> back' : '');
 
     const attach = () => { document.body.appendChild(hud); document.body.appendChild(reminder); };
+    if (document.body) attach();
+    else document.addEventListener("DOMContentLoaded", attach);
+  }
+
+  // Fixed top-right list of cheat codes — shown while the keyboard is active so
+  // the codes are visible even when the console itself is scrolled out of view.
+  function buildCodesHud() {
+    const NAME = { cyber: "Cyber", cosmic: "Cosmic", arcade: "Arcade" };
+    const cap = (k) => (k === "A" || k === "B")
+      ? `<kbd>${k}</kbd>` : `<kbd data-dir="${k}"></kbd>`;
+    const rows = COMBOS.map((c) =>
+      `<li><b>${NAME[c.theme] || c.theme}</b><span>${c.seq.map(cap).join("")}</span></li>`).join("");
+    codesHud = document.createElement("aside");
+    codesHud.className = "codes-hud"; codesHud.hidden = true;
+    codesHud.setAttribute("aria-label", "Cheat codes");
+    codesHud.innerHTML = `
+      <p class="codes-hud__title">⛶ Cheat Codes</p>
+      <ul class="cheat__codes cheat__codes--hud">
+        ${rows}
+        <li><b>Reset</b><span><kbd>R</kbd></span></li>
+        <li><b>Exit</b><span><kbd>Esc</kbd></span></li>
+      </ul>`;
+    const attach = () => document.body.appendChild(codesHud);
     if (document.body) attach();
     else document.addEventListener("DOMContentLoaded", attach);
   }

@@ -57,6 +57,7 @@
   --p-pm:        #2563eb;
   --p-gov:       #0891b2;
   --p-social:    #db2777;
+  --p-builder:   #d97706;
 
   color-scheme: light;
 }
@@ -98,6 +99,7 @@
   --p-pm:        #00ff85;
   --p-gov:       #14e0c4;
   --p-social:    #aaff00;
+  --p-builder:   #ffb000;
 
   color-scheme: dark;
 }
@@ -139,6 +141,7 @@
   --p-pm:        #7c8cff;
   --p-gov:       #4fe3ff;
   --p-social:    #ff5fb0;
+  --p-builder:   #ffb86b;
 
   color-scheme: dark;
 }
@@ -180,6 +183,7 @@
   --p-pm:        #2d6cdf;
   --p-gov:       #00a878;
   --p-social:    #ff2e63;
+  --p-builder:   #ff9f1c;
 
   color-scheme: light;
 }
@@ -193,6 +197,10 @@
    skin and never touches the cheat-code system itself.
    Specificity: html[data-character] (0,1,1) > [data-theme] blocks (0,1,0).
    ========================================================================== */
+html[data-character="builder"] {
+  --accent: var(--p-builder); --accent-2: var(--p-builder);
+  --glow: 0 0 20px color-mix(in srgb, var(--p-builder) 55%, transparent);
+}
 html[data-character="pm"] {
   --accent: var(--p-pm); --accent-2: var(--p-pm);
   --glow: 0 0 20px color-mix(in srgb, var(--p-pm) 55%, transparent);

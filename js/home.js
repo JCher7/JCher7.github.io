@@ -7,9 +7,9 @@
    ========================================================================== */
 (function Home() {
   const $ = (sel, root = document) => root.querySelector(sel);
+  let openSkillByRole = null;          // set by initMindmap; called on character change
 
   /* ---- 1. Immediate-value identity block (renders synchronously) ---- */
-  $("#brand").innerHTML = `${PROFILE.name.split(" ")[0]}<span>.</span>`;
   $("#hero-name").textContent = PROFILE.name;
   $("#hero-role").textContent = PROFILE.role;
   $("#hero-tagline").textContent = PROFILE.tagline;
@@ -119,12 +119,11 @@
     root.appendChild(block);
   };
 
-  if (typeof SKILLS !== "undefined") addBlock("Skills", null,
-    `<div class="skills-wrap">${SKILLS.map((g) => `
-      <div class="skills-group">
-        <h4>${g.group}</h4>
-        <div class="skill-chips">${g.items.map((s) => `<span class="skill">${s}</span>`).join("")}</div>
-      </div>`).join("")}</div>`);
+  if (typeof SKILLS !== "undefined") {
+    addBlock("Skills", null, mindmapHTML());
+    const mapEl = root.querySelector(".mmap");
+    if (mapEl) initMindmap(mapEl);
+  }
 
   if (typeof EDUCATION !== "undefined") addBlock("Education", null,
     `<div class="mini-grid">${EDUCATION.map((e) => `
@@ -208,6 +207,9 @@
     // Reveal / hide the character dossier
     renderDossier(filter);
 
+    // Open the matching skill group in the mindmap (accordion)
+    if (openSkillByRole) openSkillByRole(filter);
+
     // Project cards: matches stay, non-matches collapse
     let matches = 0;
     document.querySelectorAll(".card").forEach((card) => {
@@ -241,4 +243,78 @@
 
   /* ---- 6. Boot the cheat-code theme engine on this page ---- */
   Theme.init();
+
+  /* ---- Skills mindmap: root on the left, collapsible category branches right ---- */
+  function mindmapHTML() {
+    const branch = (g) => `
+      <div class="mbranch" data-role="${g.role || ""}" style="--c: var(${g.colour || "--accent"})">
+        <button class="mnode mnode--cat" type="button" aria-expanded="false">${g.group}</button>
+        <div class="mleaves">${g.items.map((s) => `<span class="mnode mnode--leaf">${s}</span>`).join("")}</div>
+      </div>`;
+    return `<div class="mmap">
+      <svg class="mmap__links" aria-hidden="true"></svg>
+      <span class="mnode mnode--root">Skills</span>
+      <div class="mmap__col mmap__col--right">${SKILLS.map(branch).join("")}</div>
+    </div>`;
+  }
+
+  function initMindmap(map) {
+    const svg = map.querySelector(".mmap__links");
+    const root = map.querySelector(".mnode--root");
+    const branches = [...map.querySelectorAll(".mbranch")];
+
+    const draw = () => {
+      const mr = map.getBoundingClientRect();
+      const anchor = (el, side) => {
+        const r = el.getBoundingClientRect();
+        return { x: (side === "right" ? r.right : r.left) - mr.left, y: r.top + r.height / 2 - mr.top };
+      };
+      const curve = (a, b, col, w, op) => {
+        const mx = (a.x + b.x) / 2;
+        return `<path d="M ${a.x.toFixed(1)} ${a.y.toFixed(1)} C ${mx.toFixed(1)} ${a.y.toFixed(1)} ${mx.toFixed(1)} ${b.y.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}" fill="none" stroke="${col}" stroke-width="${w}" stroke-opacity="${op}" stroke-linecap="round"/>`;
+      };
+      let d = "";
+      branches.forEach((branch) => {
+        const cat = branch.querySelector(".mnode--cat");
+        const col = getComputedStyle(cat).color;
+        d += curve(anchor(root, "right"), anchor(cat, "left"), col, 2.6, 0.85);
+        if (branch.classList.contains("is-open")) {       // only draw to visible skills
+          branch.querySelectorAll(".mnode--leaf").forEach((leaf) =>
+            (d += curve(anchor(cat, "right"), anchor(leaf, "left"), col, 1.6, 0.45)));
+        }
+      });
+      svg.innerHTML = d;
+    };
+
+    let raf;
+    const schedule = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
+
+    // Accordion: open one branch (closing the rest); clicking an open one closes it.
+    const setOpen = (branch) => {
+      branches.forEach((b) => {
+        const open = b === branch;
+        b.classList.toggle("is-open", open);
+        b.querySelector(".mnode--cat").setAttribute("aria-expanded", String(open));
+      });
+      schedule();
+    };
+    branches.forEach((b) =>
+      b.querySelector(".mnode--cat").addEventListener("click", () =>
+        setOpen(b.classList.contains("is-open") ? null : b)));
+
+    // Expose: open the branch whose data-role matches the active character.
+    openSkillByRole = (role) => {
+      const match = role && branches.find((b) => b.dataset.role === role);
+      if (match) setOpen(match);
+      else if (!role) setOpen(branches[0]);             // default → first group open
+    };
+    setOpen(branches[0]);                               // start with the first open
+
+    requestAnimationFrame(draw);
+    window.addEventListener("resize", schedule, { passive: true });
+    if (window.ResizeObserver) new ResizeObserver(schedule).observe(map);
+    new MutationObserver(schedule).observe(document.documentElement,
+      { attributes: true, attributeFilter: ["data-theme"] });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  }
 })();

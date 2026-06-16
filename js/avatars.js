@@ -7,6 +7,26 @@
    Swap these freely — only the markup changes, not the wiring.
    ========================================================================== */
 const AVATARS = {
+  /* The Builder — round glasses + a </> code badge (AI / software / UX) */
+  builder: `
+  <svg viewBox="0 0 120 120" class="av-svg" role="img" aria-label="The Builder">
+    <defs><clipPath id="clip-bld"><circle cx="60" cy="60" r="56"/></clipPath></defs>
+    <circle class="av-frame" cx="60" cy="60" r="56"/>
+    <g clip-path="url(#clip-bld)">
+      <path class="av-cloth" d="M16 124 Q18 86 60 86 Q102 86 104 124 Z"/>
+      <rect class="av-skin" x="51" y="70" width="18" height="20" rx="7"/>
+      <circle class="av-skin" cx="60" cy="52" r="23"/>
+      <path class="av-hair" d="M36 50 Q35 24 60 24 Q85 24 84 50 Q80 36 60 38 Q40 36 36 50Z"/>
+      <circle class="av-glass" cx="51" cy="53" r="6"/>
+      <circle class="av-glass" cx="69" cy="53" r="6"/>
+      <path class="av-glass" d="M57 53 H63"/>
+      <path class="av-smile" d="M53 63 Q60 68 67 63"/>
+      <rect class="av-badge" x="72" y="76" width="26" height="21" rx="6"/>
+      <path class="av-glass" d="M81 81 l-4 5 4 5"/>
+      <path class="av-glass" d="M89 81 l4 5 -4 5"/>
+    </g>
+  </svg>`,
+
   /* The Operator — headset + clipboard energy (IT PM / Event Organizer) */
   pm: `
   <svg viewBox="0 0 120 120" class="av-svg" role="img" aria-label="The Operator">
