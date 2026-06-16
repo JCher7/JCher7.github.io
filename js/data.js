@@ -363,12 +363,15 @@ const PROJECTS = [
    Edit freely — these drive the Skills / Education / Honors / Certs blocks.
    ========================================================================== */
 
-/* `role` links a skill category to a persona id — selecting that character
-   auto-opens this group in the skills mindmap. */
+/* `roles` lists the persona ids that auto-open this group in the skills mindmap
+   (selecting that character expands it). Kept small per group so no branch is
+   too tall. Design & Production has no role — it's not tied to a persona. */
 const SKILLS = [
-  { group: "Leadership & Management", colour: "--p-pm", role: "pm", items: ["Project Management", "Team Leadership", "Event Planning", "Event Management", "HR Management", "Training Delivery"] },
-  { group: "Data & Engineering", colour: "--p-builder", role: "builder", items: ["AI Application Development", "Data Management", "Python", "Microsoft Excel", "Tableau", "MySQL", "PHP", "Node.js", "React.js", "Vue.js", "JavaScript", "HTML", "CSS", "Bootstrap", "Google Maps API"] },
-  { group: "Design & Production", colour: "--p-social", role: "social", items: ["Figma", "User Interface Design", "On-set Production"] },
+  { group: "Leadership & Management", colour: "--skill-lead",   roles: ["pm", "social"],   items: ["Project Management", "Team Leadership", "Event Planning", "Event Management", "HR Management", "Training Delivery"] },
+  { group: "AI & Data",              colour: "--skill-data",   roles: ["builder", "gov"], items: ["AI Application Development", "Data Management", "Microsoft Excel", "Tableau", "MySQL"] },
+  { group: "Languages",             colour: "--skill-lang",   roles: [],                 items: ["Python", "JavaScript", "PHP", "HTML", "CSS"] },
+  { group: "Frameworks & APIs",     colour: "--skill-fw",     roles: ["builder"],        items: ["React.js", "Vue.js", "Node.js", "Bootstrap", "Google Maps API"] },
+  { group: "Design & Production",    colour: "--skill-design", roles: [],                 items: ["Figma", "User Interface Design", "On-set Production"] },
 ];
 
 const EDUCATION = [

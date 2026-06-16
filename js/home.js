@@ -247,7 +247,7 @@
   /* ---- Skills mindmap: root on the left, collapsible category branches right ---- */
   function mindmapHTML() {
     const branch = (g) => `
-      <div class="mbranch" data-role="${g.role || ""}" style="--c: var(${g.colour || "--accent"})">
+      <div class="mbranch" data-roles="${(g.roles || []).join(",")}" style="--c: var(${g.colour || "--accent"})">
         <button class="mnode mnode--cat" type="button" aria-expanded="false">${g.group}</button>
         <div class="mleaves">${g.items.map((s) => `<span class="mnode mnode--leaf">${s}</span>`).join("")}</div>
       </div>`;
@@ -289,26 +289,28 @@
     let raf;
     const schedule = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(draw); };
 
-    // Accordion: open one branch (closing the rest); clicking an open one closes it.
-    const setOpen = (branch) => {
+    // Open exactly the given set of branches (closing the rest).
+    const applyOpen = (set) => {
       branches.forEach((b) => {
-        const open = b === branch;
+        const open = set.includes(b);
         b.classList.toggle("is-open", open);
         b.querySelector(".mnode--cat").setAttribute("aria-expanded", String(open));
       });
       schedule();
     };
+    // Manual click stays single-focus: open just this one (or close it).
     branches.forEach((b) =>
       b.querySelector(".mnode--cat").addEventListener("click", () =>
-        setOpen(b.classList.contains("is-open") ? null : b)));
+        applyOpen(b.classList.contains("is-open") ? [] : [b])));
 
-    // Expose: open the branch whose data-role matches the active character.
+    // Expose: a character opens ALL its related branches (up to 2).
     openSkillByRole = (role) => {
-      const match = role && branches.find((b) => b.dataset.role === role);
-      if (match) setOpen(match);
-      else if (!role) setOpen(branches[0]);             // default → first group open
+      const matches = role
+        ? branches.filter((b) => (b.dataset.roles || "").split(",").includes(role)) : [];
+      if (matches.length) applyOpen(matches);
+      else if (!role) applyOpen([branches[0]]);         // default → first group open
     };
-    setOpen(branches[0]);                               // start with the first open
+    applyOpen([branches[0]]);                           // start with the first open
 
     requestAnimationFrame(draw);
     window.addEventListener("resize", schedule, { passive: true });

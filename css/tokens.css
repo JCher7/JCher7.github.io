@@ -59,6 +59,17 @@
   --p-social:    #db2777;
   --p-builder:   #d97706;
 
+  /* Skill-branch palette — its own 5-colour spectrum, independent of persona/role
+     colours. Each theme overrides the 5 hues (+ s/l) below, so the branch colours
+     shift with the active theme while staying distinct from one another. */
+  --hue-lead: 40; --hue-data: 212; --hue-lang: 264; --hue-fw: 176; --hue-design: 336;
+  --skill-s: 60%; --skill-l: 46%;
+  --skill-lead:   hsl(var(--hue-lead)   var(--skill-s) var(--skill-l));
+  --skill-data:   hsl(var(--hue-data)   var(--skill-s) var(--skill-l));
+  --skill-lang:   hsl(var(--hue-lang)   var(--skill-s) var(--skill-l));
+  --skill-fw:     hsl(var(--hue-fw)     var(--skill-s) var(--skill-l));
+  --skill-design: hsl(var(--hue-design) var(--skill-s) var(--skill-l));
+
   color-scheme: light;
 }
 
@@ -100,6 +111,9 @@
   --p-gov:       #14e0c4;
   --p-social:    #aaff00;
   --p-builder:   #ffb000;
+  /* neon green / lime / cyan family */
+  --hue-lead: 95; --hue-data: 180; --hue-lang: 140; --hue-fw: 160; --hue-design: 115;
+  --skill-s: 90%; --skill-l: 60%;
 
   color-scheme: dark;
 }
@@ -142,6 +156,9 @@
   --p-gov:       #4fe3ff;
   --p-social:    #ff5fb0;
   --p-builder:   #ffb86b;
+  /* violet / blue / magenta family */
+  --hue-lead: 285; --hue-data: 220; --hue-lang: 305; --hue-fw: 195; --hue-design: 335;
+  --skill-s: 85%; --skill-l: 74%;
 
   color-scheme: dark;
 }
@@ -184,6 +201,9 @@
   --p-gov:       #00a878;
   --p-social:    #ff2e63;
   --p-builder:   #ff9f1c;
+  /* bright playful primaries */
+  --hue-lead: 35; --hue-data: 210; --hue-lang: 280; --hue-fw: 150; --hue-design: 350;
+  --skill-s: 85%; --skill-l: 44%;
 
   color-scheme: light;
 }
