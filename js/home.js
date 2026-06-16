@@ -19,29 +19,38 @@
   resumeBtns.forEach((b) => (b.href = PROFILE.resume));
   document.querySelectorAll("[data-linkedin]").forEach((a) => (a.href = PROFILE.linkedin));
 
-  /* ---- 2. Render persona cards ---- */
-  const personaGrid = $("#persona-grid");
+  /* ---- 2. Render the persistent persona RAIL (3 circles + clear) ---- */
+  const rail = $("#rail");
+  const select = (id) => {
+    const cur = Store.get().filter;
+    Store.set({ filter: cur === id ? null : id });   // toggle
+  };
+
   PERSONAS.forEach((p) => {
-    const count = PROJECTS.filter((pr) => pr.personas.includes(p.id)).length;
-    const card = document.createElement("button");
-    card.className = "persona";
-    card.type = "button";
-    card.style.setProperty("--p", `var(${p.accentVar})`);
-    card.dataset.persona = p.id;
-    card.setAttribute("aria-pressed", "false");
-    card.innerHTML = `
-      <span class="persona__portrait" aria-hidden="true">${AVATARS[p.id] || ""}</span>
-      <span class="persona__alias">${p.alias}</span>
-      <span class="persona__tag">${p.tag}</span>
-      <span class="persona__title">${p.title}</span>
-      <span class="muted" style="font-size:.88rem">${p.blurb}</span>
-      <span class="persona__count">▸ ${count} case stud${count === 1 ? "y" : "ies"}</span>`;
-    card.addEventListener("click", () => {
-      const cur = Store.get().filter;
-      Store.set({ filter: cur === p.id ? null : p.id });  // toggle
-    });
-    personaGrid.appendChild(card);
+    const btn = document.createElement("button");
+    btn.className = "rail__btn";
+    btn.type = "button";
+    btn.style.setProperty("--p", `var(${p.accentVar})`);
+    btn.dataset.persona = p.id;
+    btn.setAttribute("aria-pressed", "false");
+    btn.setAttribute("aria-label", `${p.alias} — ${p.title}`);
+    btn.title = `${p.alias} · ${p.title}`;
+    btn.innerHTML = `
+      <span class="rail__avatar" aria-hidden="true">${AVATARS[p.id] || ""}</span>
+      <span class="rail__label">${p.alias.replace(/^The /, "")}</span>`;
+    btn.addEventListener("click", () => { select(p.id); btn.blur(); });  // blur → Enter hits console, not this
+    rail.appendChild(btn);
   });
+
+  // Clear / deactivate filtering, available any time from the rail.
+  const railClear = document.createElement("button");
+  railClear.className = "rail__clear";
+  railClear.type = "button";
+  railClear.title = "Show all / clear role";
+  railClear.setAttribute("aria-label", "Show all — clear role filter");
+  railClear.textContent = "⊘";
+  railClear.addEventListener("click", () => { Store.set({ filter: null }); railClear.blur(); });
+  rail.appendChild(railClear);
 
   /* ---- 3. Render everything into #sections ---- */
   const root = $("#sections");
@@ -141,14 +150,63 @@
         ${c.url ? `<a class="cert-link" href="${c.url}" target="_blank" rel="noopener">Verify ↗</a>` : ""}
       </div>`).join("")}</div>`);
 
-  /* ---- 4. Apply filter state to DOM (the actual Concept-1 behaviour) ---- */
+  /* ---- 4. Character dossier (stat sheet) helpers ---- */
+  const dossierEl = $("#dossier");
+
+  // SVG radar/spider chart from a persona's `stats` (values aligned to STAT_AXES).
+  function buildRadar(values) {
+    const n = values.length, cx = 50, cy = 50, R = 30, labelR = 40;
+    const ang = (i) => (-90 + (360 / n) * i) * Math.PI / 180;
+    const at = (i, r) => [(cx + r * Math.cos(ang(i))).toFixed(1), (cy + r * Math.sin(ang(i))).toFixed(1)];
+    const ring = (f) => `<polygon class="radar-grid" points="${values.map((_, i) => at(i, R * f).join(",")).join(" ")}"/>`;
+    const grid = [0.25, 0.5, 0.75, 1].map(ring).join("");
+    const axes = values.map((_, i) => { const [x, y] = at(i, R); return `<line class="radar-axis" x1="${cx}" y1="${cy}" x2="${x}" y2="${y}"/>`; }).join("");
+    const dpts = values.map((v, i) => at(i, R * Math.max(0, Math.min(10, v)) / 10));
+    const area = `<polygon class="radar-area" points="${dpts.map((p) => p.join(",")).join(" ")}"/>`;
+    const dots = dpts.map((p) => `<circle class="radar-dot" cx="${p[0]}" cy="${p[1]}" r="1.5"/>`).join("");
+    const labels = values.map((_, i) => { const [x, y] = at(i, labelR); return `<text class="radar-label" x="${x}" y="${(+y + 1.6).toFixed(1)}" text-anchor="middle">${STAT_AXES[i]}</text>`; }).join("");
+    return `<svg viewBox="-12 -8 124 116" role="img" aria-label="Competency radar">${grid}${axes}${area}${dots}${labels}</svg>`;
+  }
+
+  function renderDossier(id) {
+    if (!dossierEl) return;
+    const p = id && PERSONAS.find((x) => x.id === id);
+    if (!p) { dossierEl.hidden = true; dossierEl.innerHTML = ""; return; }
+    dossierEl.style.setProperty("--p", `var(${p.accentVar})`);
+    dossierEl.innerHTML = `
+      <div class="dossier__portrait" aria-hidden="true">${AVATARS[p.id] || ""}</div>
+      <div class="dossier__info">
+        <span class="dossier__eyebrow">▶ Now playing · Class</span>
+        <h3 class="dossier__name">${p.alias}</h3>
+        <p class="dossier__role">${p.title}</p>
+        <p class="dossier__quote">“${p.quote}”</p>
+        <div class="dossier__skills">${p.signature.map((s) => `<span class="skill">${s}</span>`).join("")}</div>
+      </div>
+      <div class="dossier__radar">${buildRadar(p.stats)}</div>`;
+    dossierEl.hidden = false;
+  }
+
+  /* ---- 5. Apply filter state to DOM (the actual Concept-1 behaviour) ---- */
   const statusEl = $("#feed-status");
   const clearBtn = $("#clear-filter");
+  const filterbar = statusEl.closest(".filterbar");
+
+  const dashHint = $("#dash-hint");
 
   Store.subscribe(({ filter }) => {
-    // Persona card active states
-    document.querySelectorAll(".persona").forEach((c) =>
+    // Rail circle active states + podium/dim on the rail
+    document.querySelectorAll(".rail__btn").forEach((c) =>
       c.setAttribute("aria-pressed", String(c.dataset.persona === filter)));
+    rail.classList.toggle("has-selection", !!filter);
+    railClear.classList.toggle("is-shown", !!filter);
+    if (dashHint) dashHint.hidden = !!filter;
+
+    // Persona-tint the whole page (token override in tokens.css)
+    if (filter) document.documentElement.dataset.character = filter;
+    else document.documentElement.removeAttribute("data-character");
+
+    // Reveal / hide the character dossier
+    renderDossier(filter);
 
     // Project cards: matches stay, non-matches collapse
     let matches = 0;
@@ -166,19 +224,21 @@
       sec.classList.toggle("is-empty", visible === 0);
     });
 
-    // Status line + clear button visibility
+    // "NOW PLAYING AS" cue + clear button
     if (filter) {
       const meta = PERSONAS.find((p) => p.id === filter);
-      statusEl.textContent = `Filtered → ${meta.title} · ${matches} shown`;
+      statusEl.textContent = `▶ NOW PLAYING AS: ${meta.alias} · ${matches} quest${matches === 1 ? "" : "s"}`;
       clearBtn.hidden = false;
+      filterbar.classList.add("is-active");
     } else {
       statusEl.textContent = `Showing all ${PROJECTS.length} entries`;
       clearBtn.hidden = true;
+      filterbar.classList.remove("is-active");
     }
   });
 
   clearBtn.addEventListener("click", () => Store.set({ filter: null }));
 
-  /* ---- 5. Boot the cheat-code theme engine on this page ---- */
+  /* ---- 6. Boot the cheat-code theme engine on this page ---- */
   Theme.init();
 })();

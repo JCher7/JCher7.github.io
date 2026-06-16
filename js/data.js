@@ -25,7 +25,13 @@ const PROFILE = {
   resume: "assets/Joshua-Cher-Resume.pdf",   // ← drop your résumé here
 };
 
-/* The three personas. `accentVar` maps to a token in tokens.css (--p-*). */
+/* Shared radar axes — same order for all three personas so they're comparable.
+   Each persona's `stats` array below supplies a value (0–10) per axis, in order. */
+const STAT_AXES = ["Leadership", "Delivery", "Compliance", "Data / Tech", "Community"];
+
+/* The three personas. `accentVar` maps to a token in tokens.css (--p-*).
+   `stats` feeds the radar chart, `signature` the dossier skill chips,
+   `quote` the dossier one-liner. */
 const PERSONAS = [
   {
     id: "pm",
@@ -34,6 +40,9 @@ const PERSONAS = [
     tag: "Delivery · Logistics · Ops",
     accentVar: "--p-pm",
     blurb: "Leads cross-functional teams, runs large-scale events, and keeps complex operations on schedule.",
+    quote: "Give me the scope and the deadline — I'll bring the team and the plan.",
+    signature: ["Project Management", "Event Management", "Team Leadership", "Logistics"],
+    stats: [9, 9, 6, 6, 7],
   },
   {
     id: "gov",
@@ -42,6 +51,9 @@ const PERSONAS = [
     tag: "PDPA · Risk · Audit",
     accentVar: "--p-gov",
     blurb: "Translates regulation into controls — data protection, DPIAs, and policy assurance.",
+    quote: "If it isn't in the source and it can't be verified, it doesn't ship.",
+    signature: ["PDPA", "DPIAs", "Risk Assessment", "Data Management"],
+    stats: [6, 7, 10, 9, 5],
   },
   {
     id: "social",
@@ -50,6 +62,9 @@ const PERSONAS = [
     tag: "Volunteering · Seniors · NGOs",
     accentVar: "--p-social",
     blurb: "Mobilises volunteers and partners to deliver sustained, measurable community outcomes.",
+    quote: "Behind every metric is a person — I build the teams that show up for them.",
+    signature: ["Community Service", "Stakeholder Engagement", "Volunteer Leadership", "Event Planning"],
+    stats: [8, 7, 5, 5, 10],
   },
 ];
 
@@ -112,7 +127,7 @@ const PROJECTS = [
   {
     id: "inspirar",
     section: "Experience",
-    title: "SMU Inspirar — Presidency & CSP Finale",
+    title: "President",
     org: "SMU Inspirar",
     period: "Jun 2025 – Jan 2026",
     personas: ["pm", "social"],
@@ -193,7 +208,7 @@ const PROJECTS = [
   {
     id: "rsaf-logistics",
     section: "Experience",
-    title: "Reservist Training Logistics & HR",
+    title: "Air Defense Weapon Specialist (Short-term Contract)",
     org: "Republic of Singapore Air Force",
     period: "Jan 2024 – May 2024",
     personas: ["pm", "gov"],
@@ -292,7 +307,7 @@ const PROJECTS = [
   {
     id: "maven-data",
     section: "Experience",
-    title: "Data & Production Assistant",
+    title: "Data and Production Assistant",
     org: "Maven Potter",
     period: "Dec 2021 – Feb 2022",
     personas: ["gov", "pm"],

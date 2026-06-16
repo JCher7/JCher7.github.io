@@ -33,6 +33,10 @@
     </div>
   </header>
 
+  <!-- Persistent "Select Your Character" rail (circles injected by js/home.js).
+       Fixed on the left for wide screens, sticky strip on small screens. -->
+  <nav class="rail" id="rail" aria-label="Select your character"><!-- injected --></nav>
+
   <main>
     <!-- ==================================================================
          HERO — immediate value: name, role, location, resume CTA (<3s)
@@ -97,16 +101,20 @@
 
     <!-- ==================================================================
          CONCEPT 1 — "Select Your Character" persona dashboard
-         Cards are rendered + wired by js/home.js
+         The selector is the persistent left RAIL (rendered into #rail by
+         js/home.js); selecting a role reveals the dossier below.
          ================================================================== -->
     <section class="wrap" aria-labelledby="dash-title">
       <div class="dash__head">
         <div>
-          <h2 id="dash-title">Choose a lens</h2>
-          <p class="muted" style="margin:.2rem 0 0">Filter the work by the role you're hiring for.</p>
+          <h2 id="dash-title">Choose your character</h2>
+          <p class="muted" style="margin:.2rem 0 0">Pick a role from the rail to filter the work — change or clear it any time.</p>
         </div>
       </div>
-      <div class="persona-grid" id="persona-grid" role="group" aria-label="Persona filters"><!-- injected --></div>
+      <!-- Shown until a role is chosen -->
+      <p class="dash-hint" id="dash-hint">⟵ Select a character to view their dossier and filter the portfolio.</p>
+      <!-- Character dossier (stat sheet) — populated by js/home.js on selection -->
+      <div class="dossier" id="dossier" aria-live="polite" hidden><!-- injected --></div>
     </section>
 
     <!-- ==================================================================

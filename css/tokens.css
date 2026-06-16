@@ -11,7 +11,7 @@
 
 :root {
   /* ---- Structural tokens shared by all themes (rarely change) ---- */
-  --maxw: 1120px;
+  --maxw: 1280px;
   --radius: 14px;
   --radius-sm: 8px;
   --space: 1rem;
@@ -182,6 +182,28 @@
   --p-social:    #ff2e63;
 
   color-scheme: light;
+}
+
+/* ============================================================================
+   CHARACTER TINT (Concept 1, part C)
+   ----------------------------------------------------------------------------
+   When a persona is selected, <html> gets data-character="pm|gov|social" and the
+   accent tokens remap to that persona's colour. Because the value is var(--p-*),
+   it re-resolves per ACTIVE THEME — so the tint stays harmonious in every cheat
+   skin and never touches the cheat-code system itself.
+   Specificity: html[data-character] (0,1,1) > [data-theme] blocks (0,1,0).
+   ========================================================================== */
+html[data-character="pm"] {
+  --accent: var(--p-pm); --accent-2: var(--p-pm);
+  --glow: 0 0 20px color-mix(in srgb, var(--p-pm) 55%, transparent);
+}
+html[data-character="gov"] {
+  --accent: var(--p-gov); --accent-2: var(--p-gov);
+  --glow: 0 0 20px color-mix(in srgb, var(--p-gov) 55%, transparent);
+}
+html[data-character="social"] {
+  --accent: var(--p-social); --accent-2: var(--p-social);
+  --glow: 0 0 20px color-mix(in srgb, var(--p-social) 55%, transparent);
 }
 
 /* Respect reduced-motion globally */

@@ -163,10 +163,10 @@ a:hover { text-decoration: underline; }
 /* Avatar SVG parts. Accent pieces inherit the card's --p (so they re-tint per
    persona AND per theme); neutral pieces stay constant. */
 .av-svg { overflow: visible; }
-.persona .av-frame   { fill: color-mix(in srgb, var(--p) 16%, var(--bg-elev)); stroke: var(--p); stroke-width: 2; }
-.persona .av-cloth   { fill: var(--p); }
-.persona .av-cloth-2 { fill: color-mix(in srgb, var(--p) 55%, #ffffff); }
-.persona .av-badge   { fill: var(--p); }
+.persona .av-frame,   .dossier .av-frame,   .rail__avatar .av-frame   { fill: color-mix(in srgb, var(--p) 16%, var(--bg-elev)); stroke: var(--p); stroke-width: 2; }
+.persona .av-cloth,   .dossier .av-cloth,   .rail__avatar .av-cloth   { fill: var(--p); }
+.persona .av-cloth-2, .dossier .av-cloth-2, .rail__avatar .av-cloth-2 { fill: color-mix(in srgb, var(--p) 55%, #ffffff); }
+.persona .av-badge,   .dossier .av-badge,   .rail__avatar .av-badge   { fill: var(--p); }
 .av-skin   { fill: #f3cda6; }
 .av-hair   { fill: #2f2418; }
 .av-eye    { fill: #2a2118; }
@@ -180,22 +180,135 @@ a:hover { text-decoration: underline; }
   color: var(--p); letter-spacing: .08em; text-transform: uppercase; }
 .persona__count { margin-top: auto; font-size: .82rem; color: var(--text-muted); }
 
-/* Active "character selected" state — border glow + scale */
+/* Active "character selected" state — steps onto the podium */
 .persona[aria-pressed="true"] {
   border-color: var(--p);
-  box-shadow: 0 0 0 2px var(--p), var(--glow);
-  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 0 0 2px var(--p), 0 18px 40px color-mix(in srgb, var(--p) 35%, transparent), var(--glow);
+  transform: translateY(-10px) scale(1.05);
+  z-index: 2;
 }
 .persona[aria-pressed="true"]::after {
-  content: "▷ ACTIVE"; position: absolute; top: .7rem; right: .8rem;
+  content: "▶ SELECTED"; position: absolute; top: .7rem; right: .8rem;
   font-family: var(--font-mono); font-size: .62rem; letter-spacing: .1em;
-  color: var(--p);
+  color: var(--accent-contrast); background: var(--p);
+  padding: .14rem .4rem; border-radius: 999px;
+}
+.persona[aria-pressed="true"] .persona__portrait { animation: podium-pop .4s cubic-bezier(.2,1.5,.3,1); }
+@keyframes podium-pop { 0% { transform: scale(1); } 55% { transform: scale(1.16); } 100% { transform: scale(1.06); } }
+
+/* When a character is chosen, the others recede (desaturate + dim + shrink) */
+.persona-grid.has-selection .persona:not([aria-pressed="true"]) {
+  opacity: .42; filter: saturate(.4); transform: scale(.96);
+}
+.persona-grid.has-selection .persona:not([aria-pressed="true"]):hover {
+  opacity: .85; filter: none; transform: scale(.99);
+}
+
+/* ============================================================================
+   PERSONA RAIL  (persistent "Select Your Character" selector)
+   Mobile-first: sticky horizontal strip. Desktop: fixed vertical rail on left.
+   ========================================================================== */
+.rail {
+  --rail-size: 90px;                  /* circle diameter (mobile) */
+  display: flex; gap: 1.6rem; align-items: center; justify-content: flex-start;
+  flex-wrap: nowrap; overflow-x: auto; position: sticky; top: var(--header-h); z-index: 40;
+  padding: .6rem; background: color-mix(in srgb, var(--bg-elev) 92%, transparent);
+  border-bottom: var(--border-w) solid var(--border); backdrop-filter: blur(8px);
+}
+@media (min-width: 1000px) {
+  .rail {
+    --rail-size: 110px;               /* circle diameter (desktop) */
+    /* Tucked just left of the content, tracking its left edge across widths. */
+    position: fixed; left: max(16px, calc(50vw - 776px)); top: 50%; transform: translateY(-50%);
+    max-height: calc(100dvh - 24px); overflow-y: auto; overflow-x: visible;
+    flex-direction: column; flex-wrap: nowrap; justify-content: center; z-index: 45;
+    padding: 0; background: none; border: none; backdrop-filter: none;
+  }
+  /* Small gutter so content clears the rail (no overlap) while staying close to centred */
+  .wrap { padding-left: 148px; }
+}
+
+.rail__btn {
+  --p: var(--accent);
+  position: relative; display: grid; justify-items: center; gap: .4rem;
+  width: calc(var(--rail-size) + 16px); padding: .3rem 0; cursor: pointer; font: inherit;
+  background: none; border: none; color: var(--text-muted);
+  transition: color var(--transition), opacity var(--transition), filter var(--transition);
+}
+.rail__avatar {
+  width: var(--rail-size); height: var(--rail-size); border-radius: 50%; overflow: hidden;
+  display: grid; place-items: center;
+  background: var(--bg-elev); border: 3px solid var(--border-strong);
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+.rail__avatar .av-svg { width: 100%; height: 100%; }
+.rail__label { font-family: var(--font-mono); font-size: .74rem; letter-spacing: .04em;
+  text-transform: uppercase; line-height: 1; }
+.rail__btn:hover .rail__avatar { transform: scale(1.05); border-color: var(--p); }
+
+.rail__btn[aria-pressed="true"] { color: var(--p); }
+.rail__btn[aria-pressed="true"] .rail__avatar {
+  border-color: var(--p); transform: scale(1.06);
+  box-shadow: 0 0 0 4px var(--p), var(--glow);
+}
+.rail.has-selection .rail__btn:not([aria-pressed="true"]) { opacity: .5; filter: saturate(.45); }
+.rail.has-selection .rail__btn:not([aria-pressed="true"]):hover { opacity: 1; filter: none; }
+
+.rail__clear {
+  display: none; place-items: center; cursor: pointer;
+  width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem;
+  background: var(--bg-elev); color: var(--text-muted);
+  border: var(--border-w) solid var(--border-strong);
+  transition: color var(--transition), border-color var(--transition);
+}
+.rail__clear.is-shown { display: grid; }
+.rail__clear:hover { color: var(--accent); border-color: var(--accent); }
+
+.dash-hint { color: var(--text-muted); font-style: italic; margin: .4rem 0 0; }
+.dash-hint[hidden] { display: none; }
+
+/* ---- Character dossier (stat sheet) ---- */
+.dossier {
+  --p: var(--accent);
+  margin-top: 1.3rem; padding: 1.4rem 1.5rem; border-radius: var(--radius);
+  background: var(--bg-elev); border: var(--border-w) solid var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), var(--glow);
+  display: grid; gap: 1.5rem; align-items: center;
+  grid-template-columns: auto 1fr auto;
+  animation: dossier-in .35s cubic-bezier(.2,.8,.3,1);
+}
+.dossier[hidden] { display: none; }
+@keyframes dossier-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+.dossier__portrait { width: 104px; height: 104px; }
+.dossier__portrait .av-svg { width: 100%; height: 100%; }
+.dossier__eyebrow { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--text-muted); }
+.dossier__name { margin: .1rem 0 0; font-family: var(--font-display); color: var(--accent);
+  text-transform: var(--case); font-size: clamp(1.3rem, 3vw, 1.7rem); line-height: 1.1; }
+.dossier__role { color: var(--text-muted); margin: .15rem 0 .55rem; font-size: .92rem; }
+.dossier__quote { margin: 0 0 .8rem; font-style: italic; color: var(--text);
+  max-width: 54ch; border-left: 3px solid var(--accent); padding-left: .8rem; }
+.dossier__skills { display: flex; flex-wrap: wrap; gap: .4rem; }
+
+.dossier__radar { width: 188px; height: 188px; color: var(--accent); }
+.dossier__radar svg { width: 100%; height: 100%; }
+.radar-grid { fill: none; stroke: var(--border-strong); stroke-width: 1; }
+.radar-axis { stroke: var(--border-strong); stroke-width: 1; }
+.radar-area { fill: color-mix(in srgb, currentColor 26%, transparent); stroke: currentColor; stroke-width: 2; }
+.radar-dot  { fill: currentColor; }
+.radar-label { fill: var(--text-muted); font-family: var(--font-mono); font-size: 6px; }
+
+@media (max-width: 760px) {
+  .dossier { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .dossier__quote { text-align: left; }
 }
 
 /* ============================================================================
    PROJECT FEED  (filter target of Core Concept 1)
    ========================================================================== */
-.feed { padding: 1rem 0 3rem; }
+.feed { padding-block: 1rem 3rem; }   /* vertical only — keep the shared .wrap gutter */
 .feed__head { display:flex; align-items:center; justify-content:space-between;
   gap:1rem; flex-wrap:wrap; margin-bottom: 1rem; }
 .feed__status { font-family: var(--font-mono); font-size:.8rem; color: var(--text-muted); }
@@ -206,9 +319,19 @@ a:hover { text-decoration: underline; }
 }
 @media (max-width: 720px) { .project-grid { grid-template-columns: 1fr; } }
 
-/* ---- Filter status bar ---- */
+/* ---- Filter status bar / "NOW PLAYING AS" cue ---- */
 .filterbar { display:flex; align-items:center; gap:1rem; margin-bottom: 1.5rem;
-  min-height: 2rem; }
+  min-height: 2rem; transition: padding var(--transition), background var(--transition); }
+.filterbar.is-active {
+  padding: .55rem .9rem; border-radius: var(--radius);
+  border: var(--border-w) solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-elev));
+  box-shadow: var(--glow);
+}
+.filterbar.is-active .feed__status {
+  color: var(--accent); font-weight: 700; font-family: var(--font-display);
+  text-transform: var(--case); letter-spacing: .03em; font-size: .98rem;
+}
 
 /* ---- Prominent, numbered section headers (used by every block) ---- */
 .block { margin: 0 0 2.8rem; scroll-margin-top: calc(var(--header-h) + 12px); }
@@ -382,6 +505,21 @@ a:hover { text-decoration: underline; }
   border: 1px solid color-mix(in srgb, var(--accent-contrast) 40%, transparent);
 }
 @keyframes hud-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+/* Persistent reminder that Enter opens the cheat console (always visible) */
+.cheat-reminder {
+  position: fixed; right: 16px; bottom: 16px; z-index: 70; pointer-events: none;
+  font-family: var(--font-mono); font-size: .68rem; letter-spacing: .02em;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--bg-elev) 85%, transparent);
+  border: var(--border-w) solid var(--border); border-radius: 999px;
+  padding: .35rem .7rem; backdrop-filter: blur(6px); opacity: .85;
+}
+.cheat-reminder kbd {
+  font-family: var(--font-mono); color: var(--text);
+  padding: 0 .3em; border-radius: 4px;
+  border: 1px solid var(--border-strong); background: var(--bg-sunken);
+}
 .cheat__screen {
   display:flex; align-items:center; min-height: 2.2em;
   font-family: var(--font-mono); font-size:.85rem; letter-spacing:.16em;

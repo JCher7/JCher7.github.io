@@ -16,6 +16,21 @@
   document.title = `${project.title} — ${PROFILE.name}`;
   Theme.init();
 
+  // Carry the selected character's colour tint into the case study (continuity).
+  const character = Store.get().filter;
+  if (character) document.documentElement.dataset.character = character;
+  else document.documentElement.removeAttribute("data-character");
+
+  // Esc returns to the main page. If the cheat keyboard is armed, theme.js
+  // consumes the Esc first (stopImmediatePropagation) to just exit that mode,
+  // so this only runs when the console isn't capturing.
+  document.addEventListener("keydown", (e) => {
+    if (e.code !== "Escape") return;
+    const t = e.target, tag = (t.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || tag === "select" || t.isContentEditable) return;
+    window.location.href = "index.html#projects";
+  });
+
   /* ---- header / lede ---- */
   $("#case-org").textContent = `${project.org} · ${project.period}`;
   $("#case-title").textContent = project.title;

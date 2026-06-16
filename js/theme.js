@@ -73,7 +73,12 @@ const Theme = (() => {
       if (!isInteractive(t)) { e.preventDefault(); setArmed(!armed); }
       return;
     }
-    if (e.code === "Escape") { if (armed) { e.preventDefault(); setArmed(false); } return; }
+    // Esc: if the keyboard is armed, just exit (and stop the event so page-level
+    // Esc handlers — e.g. "back to home" on case studies — don't also fire).
+    if (e.code === "Escape") {
+      if (armed) { e.preventDefault(); e.stopImmediatePropagation(); setArmed(false); }
+      return;
+    }
 
     if (!armed) return;                          // inactive → arrows scroll normally
     const key = KEYMAP[e.code];
@@ -104,8 +109,18 @@ const Theme = (() => {
     hud.className = "cheat-hud"; hud.hidden = true;
     hud.setAttribute("role", "status");
     hud.innerHTML = '⌨ Cheat keyboard <b>ACTIVE</b> — use arrow keys + A/B · <kbd>Esc</kbd> to exit';
-    document.addEventListener("DOMContentLoaded", () => document.body.appendChild(hud));
-    if (document.body) document.body.appendChild(hud);
+
+    // Small PERSISTENT reminder (always visible) that Enter opens the console.
+    // On case-study pages it also notes Esc returns home.
+    const reminder = document.createElement("div");
+    reminder.className = "cheat-reminder";
+    const onCase = !!document.querySelector(".case");
+    reminder.innerHTML = '<kbd>Enter</kbd> cheat console'
+      + (onCase ? ' · <kbd>Esc</kbd> back' : '');
+
+    const attach = () => { document.body.appendChild(hud); document.body.appendChild(reminder); };
+    if (document.body) attach();
+    else document.addEventListener("DOMContentLoaded", attach);
   }
 
   function press(key, btn) {
