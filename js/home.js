@@ -82,7 +82,7 @@
       ? `<a href="project.html?p=${pr.id}">${pr.title}</a>` : pr.title;
     const cta = hasQuest
       ? `<a class="btn card__cta" href="project.html?p=${pr.id}">▶ Start Quest</a>`
-      : `<span class="card__cta card__cta--static">Profile entry</span>`;
+      : "";
     return `
       <article class="card is-match${hasQuest ? "" : " card--plain"}" data-personas="${pr.personas.join(",")}">
         <div class="card__top">

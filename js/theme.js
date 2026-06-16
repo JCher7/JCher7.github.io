@@ -115,7 +115,7 @@ const Theme = (() => {
     const reminder = document.createElement("div");
     reminder.className = "cheat-reminder";
     const onCase = !!document.querySelector(".case");
-    reminder.innerHTML = '<kbd>Enter</kbd> cheat console'
+    reminder.innerHTML = 'Press <kbd>Enter</kbd> to activate console'
       + (onCase ? ' · <kbd>Esc</kbd> back' : '');
 
     const attach = () => { document.body.appendChild(hud); document.body.appendChild(reminder); };

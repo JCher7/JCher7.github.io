@@ -216,10 +216,12 @@ a:hover { text-decoration: underline; }
   border-bottom: var(--border-w) solid var(--border); backdrop-filter: blur(8px);
 }
 @media (min-width: 1000px) {
+  /* Shared left position for the rail AND the reminder, so they line up */
+  :root { --rail-x: max(16px, calc(50vw - 776px)); }
   .rail {
     --rail-size: 110px;               /* circle diameter (desktop) */
     /* Tucked just left of the content, tracking its left edge across widths. */
-    position: fixed; left: max(16px, calc(50vw - 776px)); top: 50%; transform: translateY(-50%);
+    position: fixed; left: var(--rail-x); top: 50%; transform: translateY(-50%);
     max-height: calc(100dvh - 24px); overflow-y: auto; overflow-x: visible;
     flex-direction: column; flex-wrap: nowrap; justify-content: center; z-index: 45;
     padding: 0; background: none; border: none; backdrop-filter: none;
@@ -354,15 +356,6 @@ a:hover { text-decoration: underline; }
 }
 .block__rule { flex: 1; height: 2px; border-radius: 2px;
   background: linear-gradient(90deg, var(--border-strong), transparent); }
-
-/* Plain (non-quest) profile cards: muted CTA label instead of a button */
-.card__cta--static {
-  margin-top: auto; align-self: flex-start;
-  font-family: var(--font-mono); font-size: .72rem; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--text-muted);
-  border: 1px dashed var(--border-strong); border-radius: var(--radius-sm);
-  padding: .4rem .7rem;
-}
 
 /* ---- Skills ---- */
 .skills-group { margin-bottom: 1.1rem; }
@@ -508,17 +501,33 @@ a:hover { text-decoration: underline; }
 
 /* Persistent reminder that Enter opens the cheat console (always visible) */
 .cheat-reminder {
-  position: fixed; right: 16px; bottom: 16px; z-index: 70; pointer-events: none;
-  font-family: var(--font-mono); font-size: .68rem; letter-spacing: .02em;
-  color: var(--text-muted);
-  background: color-mix(in srgb, var(--bg-elev) 85%, transparent);
-  border: var(--border-w) solid var(--border); border-radius: 999px;
-  padding: .35rem .7rem; backdrop-filter: blur(6px); opacity: .85;
+  position: fixed; left: 14px; bottom: 14px; z-index: 70; pointer-events: none;
+  font-family: var(--font-mono); font-size: .66rem; font-weight: 600; letter-spacing: .02em;
+  color: var(--text);
+  background: var(--bg-elev);
+  border: 1px solid var(--accent); border-radius: 999px;
+  padding: .32rem .65rem; backdrop-filter: blur(6px);
+  box-shadow: var(--shadow);
 }
 .cheat-reminder kbd {
-  font-family: var(--font-mono); color: var(--text);
-  padding: 0 .3em; border-radius: 4px;
-  border: 1px solid var(--border-strong); background: var(--bg-sunken);
+  font-family: var(--font-mono); font-weight: 700; color: var(--accent-contrast);
+  padding: .03em .3em; border-radius: 4px; background: var(--accent);
+}
+/* Desktop: centre the reminder under the circle column. Declared AFTER the base
+   rule above so its `left` wins the cascade (source order). Width is constrained
+   so it wraps narrow and never overflows the screen edge. */
+@media (min-width: 1000px) {
+  :root {
+    /* circle-column centre, and where the main content starts (box-left + gutter) */
+    --rmd-cx: calc(var(--rail-x) + 63px);
+    --rmd-content-left: calc(max(0px, 50vw - 640px) + 148px);
+  }
+  .cheat-reminder {
+    left: var(--rmd-cx); right: auto; transform: translateX(-50%); text-align: center;
+    /* widest the pill can be while staying both on-screen and left of the content;
+       roomy on wide screens → one line, tight in a narrow gutter → text wraps */
+    max-width: calc(2 * min(var(--rmd-cx) - 8px, var(--rmd-content-left) - 8px - var(--rmd-cx)));
+  }
 }
 .cheat__screen {
   display:flex; align-items:center; min-height: 2.2em;
