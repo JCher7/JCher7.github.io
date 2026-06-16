@@ -303,14 +303,11 @@
       b.querySelector(".mnode--cat").addEventListener("click", () =>
         applyOpen(b.classList.contains("is-open") ? [] : [b])));
 
-    // Expose: a character opens ALL its related branches (up to 2).
-    openSkillByRole = (role) => {
-      const matches = role
-        ? branches.filter((b) => (b.dataset.roles || "").split(",").includes(role)) : [];
-      if (matches.length) applyOpen(matches);
-      else if (!role) applyOpen([branches[0]]);         // default → first group open
-    };
-    applyOpen([branches[0]]);                           // start with the first open
+    // Expose: a character opens ALL its related branches (up to 2);
+    // no character (or no match) → everything closed.
+    openSkillByRole = (role) =>
+      applyOpen(role ? branches.filter((b) => (b.dataset.roles || "").split(",").includes(role)) : []);
+    applyOpen([]);                                      // start with all branches closed
 
     requestAnimationFrame(draw);
     window.addEventListener("resize", schedule, { passive: true });

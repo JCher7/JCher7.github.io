@@ -407,7 +407,12 @@ a:hover { text-decoration: underline; }
   transition: background var(--transition);
 }
 .mnode--cat::after { content: "▸"; font-size: .85em; transition: transform var(--transition); }
-.mbranch.is-open .mnode--cat { background: color-mix(in srgb, var(--c) 24%, var(--bg-elev)); }
+.mnode--cat:hover { border-color: var(--c); }
+/* selected/open branch — coloured selection ring, like the persona cards */
+.mbranch.is-open .mnode--cat {
+  background: color-mix(in srgb, var(--c) 22%, var(--bg-elev));
+  border-color: var(--c); box-shadow: 0 0 0 2px var(--c);
+}
 .mbranch.is-open .mnode--cat::after { transform: rotate(90deg); }
 .mbranch:not(.is-open) .mleaves { display: none; }
 
