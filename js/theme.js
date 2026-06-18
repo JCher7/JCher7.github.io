@@ -55,6 +55,15 @@ const Theme = (() => {
 
     document.addEventListener("keydown", onKey);
 
+    // Email links: copy the address (with a toast) so they always do something,
+    // even when the OS has no mail app for mailto:. The mailto still fires too.
+    document.querySelectorAll('a[href^="mailto:"]').forEach((a) =>
+      a.addEventListener("click", () => {
+        const email = (a.getAttribute("href") || "").replace(/^mailto:/, "");
+        copyText(email);
+        toast("✉ Email copied — " + email);
+      }));
+
     Store.subscribe(({ theme }) => {
       apply(theme); idle = theme; renderIdle();
       document.querySelectorAll("[data-theme-pill]").forEach((b) =>
@@ -169,6 +178,26 @@ const Theme = (() => {
     if (flash) { screenEl.classList.remove("flash"); void screenEl.offsetWidth; screenEl.classList.add("flash"); }
   }
   function flashBtn(btn) { if (!btn) return; btn.classList.add("is-press"); setTimeout(() => btn.classList.remove("is-press"), 130); }
+
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+    } else { fallbackCopy(text); }
+  }
+  function fallbackCopy(text) {
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand("copy"); } catch {}
+    ta.remove();
+  }
+  function toast(msg) {
+    let t = document.querySelector(".toast");
+    if (!t) { t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+    t.textContent = msg;
+    t.classList.remove("show"); void t.offsetWidth; t.classList.add("show");
+    clearTimeout(t._timer); t._timer = setTimeout(() => t.classList.remove("show"), 2200);
+  }
   const endsWith = (buf, seq) =>
     buf.length >= seq.length && seq.every((s, i) => buf[buf.length - seq.length + i] === s);
 

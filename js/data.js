@@ -142,7 +142,7 @@ const PROJECTS = [
     org: "SMU Inspirar",
     period: "Jun 2025 – Jan 2026",
     personas: ["pm", "social"],
-    summary: "Led 120 volunteers running weekly senior-engagement sessions across 27 centres, and co-organised the Community Service Project Finale uniting ~200 beneficiaries and partners.",
+    summary: "Led 120 volunteers running weekly senior-engagement sessions across 27 centres, engaging ~640 beneficiaries, and co-organised the Community Service Project Finale with ~200 event attendees.",
     skills: ["Project Management", "Team Leadership", "Event Management", "Stakeholder Engagement"],
     pdf: "#",
     quest: {
@@ -170,7 +170,8 @@ const PROJECTS = [
         metrics: [
           { value: "120", label: "Volunteers led" },
           { value: "27", label: "Centres served" },
-          { value: "~200", label: "Finale beneficiaries & partners" },
+          { value: "~640", label: "Beneficiaries engaged" },
+          { value: "~200", label: "Finale event attendees" },
         ],
       },
     },

@@ -14,7 +14,6 @@
   $("#hero-role").textContent = PROFILE.role;
   $("#hero-tagline").textContent = PROFILE.tagline;
   $("#hero-location").textContent = "📍 " + PROFILE.location;
-  $("#hero-email").href = "mailto:" + PROFILE.email;
   const resumeBtns = document.querySelectorAll("[data-resume]");
   resumeBtns.forEach((b) => (b.href = PROFILE.resume));
   document.querySelectorAll("[data-linkedin]").forEach((a) => (a.href = PROFILE.linkedin));
@@ -204,9 +203,7 @@
 
   /* ---- 5. Apply filter state to DOM (the actual Concept-1 behaviour) ---- */
   const statusEl = $("#feed-status");
-  const clearBtn = $("#clear-filter");
   const filterbar = statusEl.closest(".filterbar");
-
   const dashHint = $("#dash-hint");
 
   Store.subscribe(({ filter }) => {
@@ -243,20 +240,16 @@
       sec.classList.toggle("is-empty", visible === 0);
     });
 
-    // "NOW PLAYING AS" cue + clear button
+    // "NOW PLAYING AS" cue (clearing the role is handled by the rail's ⊘ button)
     if (filter) {
       const meta = PERSONAS.find((p) => p.id === filter);
       statusEl.textContent = `▶ NOW PLAYING AS: ${meta.alias} · ${matches} quest${matches === 1 ? "" : "s"}`;
-      clearBtn.hidden = false;
       filterbar.classList.add("is-active");
     } else {
       statusEl.textContent = `Showing all ${PROJECTS.length} entries`;
-      clearBtn.hidden = true;
       filterbar.classList.remove("is-active");
     }
   });
-
-  clearBtn.addEventListener("click", () => Store.set({ filter: null }));
 
   /* ---- 6. Boot the cheat-code theme engine on this page ---- */
   Theme.init();

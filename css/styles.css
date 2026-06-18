@@ -611,6 +611,17 @@ a:hover { text-decoration: underline; }
 }
 @keyframes hud-in { from { opacity: 0; transform: translate(-50%, 8px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
+/* Transient confirmation toast (e.g. "email copied") */
+.toast {
+  position: fixed; left: 50%; bottom: 72px; transform: translateX(-50%) translateY(10px);
+  z-index: 95; pointer-events: none; opacity: 0; max-width: min(90vw, 420px); text-align: center;
+  font-family: var(--font-mono); font-size: .8rem; letter-spacing: .01em;
+  color: var(--accent-contrast); background: var(--accent);
+  border-radius: 999px; padding: .55rem 1rem; box-shadow: var(--shadow-lg), var(--glow);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
 /* Top-right cheat-code list, shown while the keyboard is active (fixed → no shift) */
 .codes-hud {
   position: fixed; top: calc(var(--header-h) + 12px); right: 14px; z-index: 80;
