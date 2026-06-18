@@ -68,6 +68,30 @@
       </header>`;
   };
 
+  // Append a non-card section block (used by Featured + the info sections).
+  const addBlock = (title, count, inner) => {
+    const block = document.createElement("section");
+    block.className = "block";
+    block.innerHTML = head(title, count) + inner;
+    root.appendChild(block);
+  };
+
+  // Featured — press / media highlights (always shown, not persona-filtered).
+  if (typeof FEATURED !== "undefined") addBlock("Featured", FEATURED.length,
+    `<div class="feat-grid">${FEATURED.map((f) => `
+      <a class="feat-card" href="${f.url}" target="_blank" rel="noopener">
+        <span class="feat-card__thumb" data-type="${f.type}">
+          <img src="${f.thumb}" alt="" loading="lazy" onerror="this.remove()">
+          <span class="feat-card__badge">${f.type === "pdf" ? "PDF" : "Link"}</span>
+        </span>
+        <span class="feat-card__body">
+          <span class="feat-card__src">${f.source}</span>
+          <span class="feat-card__title">${f.title}</span>
+          <span class="feat-card__desc">${f.description}</span>
+          <span class="feat-card__cta">${f.type === "pdf" ? "Open PDF" : "Read more"} ↗</span>
+        </span>
+      </a>`).join("")}</div>`);
+
   // A project/role card. Rich entries (with `quest`) get a Start Quest CTA;
   // shorter profile entries render the same card without one.
   const cardHTML = (pr) => {
@@ -111,14 +135,7 @@
     root.appendChild(block);
   });
 
-  // 3b. Info sections (no cards, not affected by the persona filter).
-  const addBlock = (title, count, inner) => {
-    const block = document.createElement("section");
-    block.className = "block";
-    block.innerHTML = head(title, count) + inner;
-    root.appendChild(block);
-  };
-
+  // Info sections (no cards, not affected by the persona filter).
   if (typeof SKILLS !== "undefined") {
     addBlock("Skills", null, mindmapHTML());
     const mapEl = root.querySelector(".mmap");

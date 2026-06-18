@@ -374,6 +374,35 @@ const SKILLS = [
   { group: "Design & Production",    colour: "--skill-design", roles: [],                 items: ["Figma", "User Interface Design", "On-set Production"] },
 ];
 
+/* Featured — press / media highlights. `type` is "pdf" or "link".
+   `thumb` is a local image in assets/ (cards still look fine if it's missing). */
+const FEATURED = [
+  {
+    type: "pdf",
+    title: "Campus Buzz — Spotlight: The Leaders Behind Three Local CSPs",
+    source: "SMU Campus Buzz · Mar 2026",
+    description: "Featured in SMU Campus Buzz on our Summer CSP Finale, where three projects came together to serve ~200 beneficiaries. The highlight wasn't the planning — it was watching seniors light up during old-school games and share stories from Singapore's early years.",
+    url: "assets/campus-buzz-csp-finale.pdf",
+    thumb: "assets/featured-campus-buzz.jpg",
+  },
+  {
+    type: "link",
+    title: "SMU Newsroom — “Stories from our Volunteers: Shaping Lives Through Service”",
+    source: "SMU Newsroom",
+    description: "Featured in SMU's 25th-anniversary community-service coverage, discussing my work as President of Inspirar and how small acts — like lending a listening ear — bring real change to seniors' lives.",
+    url: "https://news.smu.edu.sg/node/364211",
+    thumb: "assets/featured-smu-newsroom.png",
+  },
+  {
+    type: "link",
+    title: "CNA938 Interview — “Students changing lives through service”",
+    source: "CNA938 · meLISTEN",
+    description: "Interviewed on CNA938 as President of SMU Inspirar — sharing how our volunteers enrich seniors' lives through weekly engagement sessions, and the involvement of ~2,000 students in SMU's Community Service Programme during Freshmen Orientation 2025.",
+    url: "https://www.melisten.sg/podcast/playlist/your-singapore-weekend-2481996/students-changing-lives-through-service-joshua-cher-president-inspirar-2025-and-glenn-yeo-president-starringsmu-2025-3001736",
+    thumb: "assets/featured-cna938.jpg",
+  },
+];
+
 const EDUCATION = [
   { school: "Singapore Management University", detail: "Information Systems", period: "2024 – 2028" },
   { school: "Temasek Junior College", detail: "GCE 'A' Levels · Integrated Programme (IP)", period: "" },
