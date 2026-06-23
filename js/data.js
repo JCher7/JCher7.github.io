@@ -411,7 +411,7 @@ const EDUCATION = [
 
 const HONORS = [
   { title: "Professor Tan Teck Meng Endeavour Award", issuer: "Singapore Management University", date: "Jun 2026",
-    note: "Awarded by SMU School of Accountancy in recognition of fortitude and resilience throughout my undergraduate journey — honouring students who embody perseverance and serve as role models." },
+    note: "Awarded by SMU School of Accountancy in recognition of fortitude and resilience throughout my undergraduate journey. The award honours students who embody perseverance and serve as role models, inspiring others to keep going through difficult times." },
   { title: "Serviceman of the Year (2023)", issuer: "Republic of Singapore Air Force", date: "Dec 2023" },
   { title: "Airman of the Month", issuer: "Republic of Singapore Air Force", date: "Mar 2023" },
   { title: "Best-in-Knowledge Award", issuer: "Republic of Singapore Air Force", date: "" },
